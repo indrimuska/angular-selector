@@ -6,16 +6,18 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
 		<title>Angular Selector</title>
-		<meta name="description" content="">
+		<meta name="description" content="Angular Selector is a native AngularJS directive that transform a simple `<select>` box into a full html select with typeahead">
 		<meta name="author" content="Indri Muska <indrimuska@gmail.com>">
+		<meta name="keywords" content="select angular selector directive typeahead">
 		
 		<!-- Stylesheets -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Pacifico">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
 		<link rel="stylesheet" href="demo.css">
 		<link rel="stylesheet" href="https://rawgit.com/indrimuska/angular-selector/master/dist/angular-selector.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/github.min.css">
 	</head>
-	<body>
+	<body ng-controller="AngularSelectorDemoCtrl">
 		<div class="container">
 			<div class="header clearfix">
 				<nav>
@@ -34,14 +36,26 @@
 					Angular Selector is a native AngularJS directive that transform a simple <code>&lt;select&gt;</code> box into a full html select with typeahead.
 				</p>
 				<ul class="list-inline">
-					<li><a class="github-button" href="https://github.com/indrimuska/angular-selector" data-icon="octicon-star" data-style="mega"
-							aria-label="Star indrimuska/angular-selector on GitHub">Star</a></li>
-					<li><a class="github-button" href="https://github.com/indrimuska/angular-selector/fork" data-icon="octicon-git-branch" data-style="mega"
-							aria-label="Fork indrimuska/angular-selector on GitHub">Fork</a></li>
-					<li><a class="github-button" href="https://github.com/indrimuska/angular-selector" data-icon="octicon-eye" data-style="mega"
-							aria-label="Watch indrimuska/angular-selector on GitHub">Watch</a></li>
-					<li><a class="github-button" href="https://github.com/indrimuska/angular-selector/archive/master.zip" data-icon="octicon-cloud-download" data-style="mega"
-							aria-label="Download indrimuska/angular-selector on GitHub">Download</a></li>
+					<li>
+						<a class="github-button" href="https://github.com/indrimuska/angular-selector" data-icon="octicon-star" data-style="mega"
+							aria-label="Star indrimuska/angular-selector on GitHub">Star</a>
+					</li>
+					<li>
+						<a class="github-button" href="https://github.com/indrimuska/angular-selector/fork" data-icon="octicon-git-branch" data-style="mega"
+							aria-label="Fork indrimuska/angular-selector on GitHub">Fork</a>
+					</li>
+					<li>
+						<a class="github-button" href="https://github.com/indrimuska/angular-selector" data-icon="octicon-eye" data-style="mega"
+							aria-label="Watch indrimuska/angular-selector on GitHub">Watch</a>
+					</li>
+					<li>
+						<a class="github-button" href="https://github.com/indrimuska/angular-selector/issues" data-icon="octicon-issue-opened" data-style="mega"
+							aria-label="Issue indrimuska/angular-selector on GitHub">Issue</a>
+					</li>
+					<li>
+						<a class="github-button" href="https://github.com/indrimuska/angular-selector/archive/master.zip" data-icon="octicon-cloud-download" data-style="mega"
+							aria-label="Download indrimuska/angular-selector on GitHub">Download</a>
+					</li>
 				</ul>
 				<p class="lead">
 					<select selector multi="true" class="jumbotron-selector">
@@ -55,9 +69,9 @@
 		
 		<div class="container">
 			
-			<article>
+			<article class="features">
 				<h2 class="pacifico">Features</h2>
-				<ul class="features">
+				<ul>
 					<li>
 						<h4>No-jQuery Required</h4>
 						<p>Angular Selector is a full native Angular directive, so you can use it without have to include any other library (except AngularJS, of course!).</p>
@@ -78,12 +92,12 @@
 						<h4>From HTML <code>&lt;option&gt;</code> to JS <code>object</code></h4>
 						<p>
 							Fill your <code>&lt;select&gt;</code> from server-side ad use data-attributes for every option you have,
-							then Angular Selector performs for you the conversion to a simple array of objects.
+							then <i>Angular Selector</i> performs for you the conversion to a simple array of objects.
 						</p>
 					</li>
 					<li>
 						<h4>Keyboard support</h4>
-						<p>Move up and down the dropdown list using keyboard arrows. Select highlighted item pressing Enter.</p>
+						<p>Move up and down the dropdown list using keyboard arrows. Select highlighted item pressing <kbd>Enter</kbd>.</p>
 					</li>
 					<li>
 						<h4>Responsive</h4>
@@ -92,6 +106,25 @@
 				</ul>
 			</article>
 			
+			<article class="examples">
+				<h2 class="pacifico">Examples</h2>
+				<section ng-repeat="example in examples" ng-init="tab='view'">
+					<div class="navbar">
+						<ul class="nav nav-pills navbar-right">
+							<li ng-class="{active:tab=='view'}"><a ng-click="tab='view'">View</a></li>
+							<li ng-class="{active:tab=='html'}"><a ng-click="tab='html'">HTML</a></li>
+							<li ng-class="{active:tab=='js'}"><a ng-click="tab='js'">JS</a></li>
+						</ul>
+						<h4 ng-bind="example.title"></h4>
+					</div>
+					
+					<div class="tab-content">
+						<div class="tab-pane example" ng-class="{active:tab=='view'}"></div>
+						<pre class="tab-pane" ng-class="{active:tab=='html'}" ng-bind-html="example.html|highlight:'html'"></pre>
+						<pre class="tab-pane" ng-class="{active:tab=='js'}" ng-bind-html="example.js|highlight:'javascript'"></pre>
+					</div>
+				</section>
+			</article>
 			
 			<footer class="footer">
 				<div class="pull-right">
@@ -106,8 +139,9 @@
 		</div>
 		
 		<!-- Scripts -->
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
 		<script src="https://rawgit.com/indrimuska/angular-selector/master/dist/angular-selector.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
 		<script src="demo.js"></script>
 		<script src="https://buttons.github.io/buttons.js" async defer id="github-bjs"></script>
 	</body>

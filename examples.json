@@ -1,0 +1,7 @@
+angular.callbacks._0([
+	{
+		"title": "Single element",
+		"html": "<select selector\n\tmodel=\"browser\"\n\toptions=\"browsers\"></select>\n\n<p>\n\tCurrent value: <code ng-bind=\"browser|json\"></code>\n</p>",
+		"js": "$scope.browser = \"AS\";\n\n$scope.browsers = [\n\t{ value: \"GC\", label: \"Chrome\" },\n\t{ value: \"FF\", label: \"Firefox\" },\n\t{ value: \"AS\", label: \"Safari\" },\n\t{ value: \"IE\", label: \"Internet Explorer\" }\n];"
+	}
+])
