@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="AngularSelectorDemo">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<title>Angular Selector</title>
+		<meta name="description" content="">
+		<meta name="author" content="Indri Muska <indrimuska@gmail.com>">
+		
+		<!-- Stylesheets -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Pacifico">
+		<link rel="stylesheet" href="demo.css">
+		<link rel="stylesheet" href="https://rawgit.com/indrimuska/angular-selector/master/dist/angular-selector.min.css">
+	</head>
+	<body>
+		<div class="container">
+			<div class="header clearfix">
+				<nav>
+					<ul class="nav nav-pills pull-right">
+						<li role="presentation"><a href="https://github.com/indrimuska/angular-selector" target="_blank">Project</a></li>
+					</ul>
+				</nav>
+				<h3 class="pacifico">Angular Selector</h3>
+			</div>
+		</div>
+		
+		<div class="jumbotron">
+			<div class="container">
+				<h1 class="pacifico">Angular Selector</h1>
+				<p class="lead">
+					Angular Selector is a native AngularJS directive that transform a simple <code>&lt;select&gt;</code> box into a full html select with typeahead.
+				</p>
+				<ul class="list-inline">
+					<li><a class="github-button" href="https://github.com/indrimuska/angular-selector" data-icon="octicon-star" data-style="mega"
+							aria-label="Star indrimuska/angular-selector on GitHub">Star</a></li>
+					<li><a class="github-button" href="https://github.com/indrimuska/angular-selector/fork" data-icon="octicon-git-branch" data-style="mega"
+							aria-label="Fork indrimuska/angular-selector on GitHub">Fork</a></li>
+					<li><a class="github-button" href="https://github.com/indrimuska/angular-selector" data-icon="octicon-eye" data-style="mega"
+							aria-label="Watch indrimuska/angular-selector on GitHub">Watch</a></li>
+					<li><a class="github-button" href="https://github.com/indrimuska/angular-selector/archive/master.zip" data-icon="octicon-cloud-download" data-style="mega"
+							aria-label="Download indrimuska/angular-selector on GitHub">Download</a></li>
+				</ul>
+				<p class="lead">
+					<select selector multi="true" class="jumbotron-selector">
+						<option value="Angular" selected>Angular</option>
+						<option value="Selector" selected>Selector</option>
+						<option value="No-jQuery required">No-jQuery required</option>
+					</select>
+				</p>
+			</div>
+		</div>
+		
+		<div class="container">
+			
+			<article>
+				<h2 class="pacifico">Features</h2>
+				<ul class="features">
+					<li>
+						<h4>No-jQuery Required</h4>
+						<p>Angular Selector is a full native Angular directive, so you can use it without have to include any other library (except AngularJS, of course!).</p>
+					</li>
+					<li>
+						<h4>Skinnable</h4>
+						<p>You can define a template for the items in the dropdown list and a template for selected items.</p>
+					</li>
+					<li>
+						<h4>RTL Support</h4>
+						<p>To use it in with any kind of text direction.</p>
+					</li>
+					<li>
+						<h4>Remote Resource Loading</h4>
+						<p>Fetch your data from an external source and use it in your application.</p>
+					</li>
+					<li>
+						<h4>From HTML <code>&lt;option&gt;</code> to JS <code>object</code></h4>
+						<p>
+							Fill your <code>&lt;select&gt;</code> from server-side ad use data-attributes for every option you have,
+							then Angular Selector performs for you the conversion to a simple array of objects.
+						</p>
+					</li>
+					<li>
+						<h4>Keyboard support</h4>
+						<p>Move up and down the dropdown list using keyboard arrows. Select highlighted item pressing Enter.</p>
+					</li>
+					<li>
+						<h4>Responsive</h4>
+						<p>Perfect for use in mobile environments.</p>
+					</li>
+				</ul>
+			</article>
+			
+			
+			<footer class="footer">
+				<div class="pull-right">
+					<a class="github-button" href="https://github.com/indrimuska" data-style="mega" aria-label="Follow @indrimuska on GitHub">Follow @indrimuska</a>
+				</div>
+				<div>
+					<h4>Indri Muska</h4>
+					<p><a href="https://gitter.im/indrimuska/angular-selector" target="_blank"><img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter"></a></p>
+				</div>
+			</footer>
+			
+		</div>
+		
+		<!-- Scripts -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+		<script src="https://rawgit.com/indrimuska/angular-selector/master/dist/angular-selector.min.js"></script>
+		<script src="demo.js"></script>
+		<script src="https://buttons.github.io/buttons.js" async defer id="github-bjs"></script>
+	</body>
+</html>

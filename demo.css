@@ -1,0 +1,53 @@
+html, body { color: #404040; }
+body { padding-top: 20px; padding-bottom: 20px; }
+a, a:focus, a:hover { color: #0095ff; cursor: pointer; }
+.pacifico { font-family: 'Pacifico', cursive; color: #0095ff !important; text-shadow: 0 .03em .03em rgba(0, 0, 0, .2); -webkit-font-smoothing: antialiased; }
+
+.header, .footer { padding-right: 15px; padding-left: 15px; }
+@media (min-width: 768px) {
+	.header, .footer { padding-right: 0; padding-left: 0; }
+	.container { max-width: 730px !important; }
+}
+
+/* Header */
+.header { padding-bottom: 20px; border-bottom: 1px solid #e5e5e5; }
+.header h3 { margin-top: 0; margin-bottom: 0; line-height: 40px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height: 45px; margin-bottom: -5px; }
+.header a { color: #0095ff; }
+
+/* Jumbotron */
+.jumbotron h1 { margin: 0; margin-bottom: 30px; }
+.jumbotron { text-align: center; box-shadow: 0 1px 2px #ddd; border-radius: 0; padding-bottom: 20px;
+	background: -webkit-linear-gradient(#fefefe, #fafafa);
+	background:    -moz-linear-gradient(#fefefe, #fafafa);
+	background:     -ms-linear-gradient(#fefefe, #fafafa);
+	background:      -o-linear-gradient(#fefefe, #fafafa);
+	background:         linear-gradient(#fefefe, #fafafa);
+}
+.jumbotron ul { margin: 25px 0; }
+.jumbotron .jumbotron-selector.selector.multiple .selector-values>li { box-shadow: 0 1px 1px rgba(0, 0, 0, .2); text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+	border-color: #3079ed; background-color: #4d90fe;
+	background: -webkit-linear-gradient(#4d90fe, #4787ed);
+	background:    -moz-linear-gradient(#4d90fe, #4787ed);
+	background:     -ms-linear-gradient(#4d90fe, #4787ed);
+	background:      -o-linear-gradient(#4d90fe, #4787ed);
+	background:         linear-gradient(#4d90fe, #4787ed); }
+
+/* Articles */
+article { margin-bottom: 60px; }
+article h2 { font-size: 24px; margin-bottom: 30px; }
+article h4 { font-size: 17px; margin-bottom: 5px; }
+article .features { -webkit-font-smoothing: antialiased; }
+
+/* Footer */
+.footer { border-top: 1px solid #e5e5e5; }
+.footer .pull-right { margin-top: 15px; }
+
+/* GitHub buttons fallback style */
+.jumbotron .list-inline > li { vertical-align: top; }
+.github-button { padding: 0 10px; height: 28px; line-height: 26px; text-shadow: 0 1px 0 rgba(255, 255, 255, .9); color: #333; margin-bottom: 5px;
+	border: 1px solid #d5d5d5; border-radius: 3px; display: inline-block; font-weight: 700; font-size: 13px; vertical-align: top; background: #fff; background-color: #eee;
+	background: -webkit-linear-gradient(#fcfcfc, #eee);
+	background:    -moz-linear-gradient(#fcfcfc, #eee);
+	background:     -ms-linear-gradient(#fcfcfc, #eee);
+	background:      -o-linear-gradient(#fcfcfc, #eee);
+	background:         linear-gradient(#fcfcfc, #eee); }
