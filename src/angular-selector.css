@@ -1,7 +1,7 @@
-@-webkit-keyframes rotate { 0% { -webkit-transform: rotateZ(-359deg); } 100% { -webkit-transform: rotateZ(0deg); } }
-   @-moz-keyframes rotate { 0% {    -moz-transform: rotateZ(-359deg); } 100% {    -moz-transform: rotateZ(0deg); } }
-     @-o-keyframes rotate { 0% {      -o-transform: rotateZ(-359deg); } 100% {      -o-transform: rotateZ(0deg); } }
-        @keyframes rotate { 0% {         transform: rotateZ(-359deg); } 100% {         transform: rotateZ(0deg); } }
+@-webkit-keyframes selector-rotate { 0% { -webkit-transform: rotateZ(-359deg); } 100% { -webkit-transform: rotateZ(0deg); } }
+   @-moz-keyframes selector-rotate { 0% {    -moz-transform: rotateZ(-359deg); } 100% {    -moz-transform: rotateZ(0deg); } }
+     @-o-keyframes selector-rotate { 0% {      -o-transform: rotateZ(-359deg); } 100% {      -o-transform: rotateZ(0deg); } }
+        @keyframes selector-rotate { 0% {         transform: rotateZ(-359deg); } 100% {         transform: rotateZ(0deg); } }
 
 /* Selector */
 [selector] { display: none; position: relative; }
@@ -70,8 +70,8 @@
 .selector.loading .selector-global-helper .selector-icon { display: table; width: 100%; }
 .selector.loading .selector-global-helper .selector-icon:after { content: ''; width: 100%; height: 100%; margin: 0; top: 0; left: 0; opacity: .5;
 	border-top: 1px solid #545a6a; border-bottom: 1px solid #d4d4db; border-left: 1px solid #545a6a; border-right: 1px solid #d4d4db;
-	-webkit-animation: rotate .5s linear infinite; -moz-animation: rotate .5s linear infinite; -o-animation: rotate .5s linear infinite; animation: rotate .5s linear infinite;
-	-webkit-border-radius: 100%; -moz-border-radius: 100%; border-radius: 100%; }
+	-webkit-animation: selector-rotate .5s linear infinite; -moz-animation: selector-rotate .5s linear infinite; -o-animation: selector-rotate .5s linear infinite;
+	animation: selector-rotate .5s linear infinite; -webkit-border-radius: 100%; -moz-border-radius: 100%; border-radius: 100%; }
 
 .selector.open .selector-helper,
 .selector.loading .selector-global-helper { border-left: none; border-right: none; }
@@ -91,8 +91,8 @@
 .selector-input .selector-shadow { position: absolute; top: 0; left: 0; opacity: 0; visibility: hidden; white-space: pre; margin: 0;}
 
 /* Dropdown */
-.selector-dropdown { display: none; list-style: none; padding: 0; margin: 0; margin-top: -.08em; position: absolute; z-index: 1; background: #fff;
-	border: 1px solid #ccc; border-top: 0 none; max-height: 15.5em; overflow-x: hidden; overflow-y: auto; z-index: 1000;
+.selector-dropdown { display: none; list-style: none; padding: 0 !important; margin: 0 !important; margin-top: -.08em !important; position: absolute; z-index: 1;
+	background: #fff; border: 1px solid #ccc; border-top: 0; max-height: 15.5em; overflow-x: hidden; overflow-y: auto; z-index: 1000;
 	-webkit-border-radius: 0 0 3px 3px; -moz-border-radius: 0 0 3px 3px; border-radius: 0 0 3px 3px;
 	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .1); box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
 	-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }

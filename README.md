@@ -5,7 +5,7 @@ Angular Selector is a native AngularJS directive that transform a simple `<selec
 ### Features
 
 * **No-jQuery Required**<br>
-  Angular Selector is a full native Angular directive, so you can use it without have to include any other library (except Angular.js, of course!).
+  Angular Selector is a full native Angular directive, so you can use it without have to include any other library (except AngularJS, of course!).
 * **Skinnable**<br>
   You can define a template for the items in the dropdown list and a template for selected items.
 * **RTL Support**<br>
