@@ -2,6 +2,16 @@ angular.callbacks._0([
 	{
 		"title": "Single element",
 		"html": "<select selector\n\tmodel=\"browser\"\n\toptions=\"browsers\"></select>\n\n<p>\n\tCurrent value: <code ng-bind=\"browser|json\"></code>\n</p>",
-		"js": "$scope.browser = \"AS\";\n\n$scope.browsers = [\n\t{ value: \"GC\", label: \"Chrome\" },\n\t{ value: \"FF\", label: \"Firefox\" },\n\t{ value: \"AS\", label: \"Safari\" },\n\t{ value: \"IE\", label: \"Internet Explorer\" }\n];"
+		"js": "$scope.browser = \"GC\";\n\n$scope.browsers = [\n\t{ value: \"GC\", label: \"Chrome\" },\n\t{ value: \"FF\", label: \"Firefox\" },\n\t{ value: \"AS\", label: \"Safari\" },\n\t{ value: \"IE\", label: \"Internet Explorer\" }\n];"
+	},
+	{
+		"title": "Multiple elements",
+		"html": "<select selector\n\tmulti=\"true\"\n\tmodel=\"myBrowsers\"\n\toptions=\"browsers\"></select>\n\n<p>\n\tCurrent value: <code ng-bind=\"myBrowsers|json\"></code>\n</p>",
+		"js": "$scope.myBrowsers = [ \"GC\", \"AS\" ];\n\n$scope.browsers = [\n\t{ value: \"GC\", label: \"Chrome\" },\n\t{ value: \"FF\", label: \"Firefox\" },\n\t{ value: \"AS\", label: \"Safari\" },\n\t{ value: \"IE\", label: \"Internet Explorer\" }\n];"
+	},
+	{
+		"title": "Custom template",
+		"html": "<script type=\"text/ng-template\" id=\"selector/demo/browserWithURL\">\n\t{{option.label}}\n\t<a class=\"small\" ng-href=\"{{option.url}}\" ng-bind=\"option.url\"></a>\n</script>\n\n<script type=\"text/ng-template\" id=\"selector/demo/browserWithIcon\">\n\t<img ng-src=\"{{option.icon}}\"> {{option.label}}\n</script>\n\n<select selector\n\tmodel=\"browser\"\n\tmulti=\"true\"\n\toptions=\"browsers\"\n\tview-item-template=\"'selector/demo/browserWithURL'\"\n\tdropdown-item-template=\"'selector/demo/browserWithIcon'\"></select>\n\n<p>\n\tCurrent value: <code ng-bind=\"browser|json\"></code>\n</p>\n\n<p class=\"small\">\n\tIcons:\n\t<a href=\"https://www.iconfinder.com/iconsets/logotypes\" target=\"_blank\">\n\t\tLogotypes\n\t</a>\n</p>",
+		"js": "$scope.browser = \"AS\";\n\n$scope.browsers = [\n\t{\n\t\tvalue: \"GC\",\n\t\tlabel: \"Chrome\",\n\t\ticon: \"https://cdn1.iconfinder.com/data/icons/logotypes/32/chrome-24.png\",\n\t\turl: \"https://www.google.it/chrome\"\n\t},\n\t{\n\t\tvalue: \"FF\",\n\t\tlabel: \"Firefox\",\n\t\ticon: \"https://cdn1.iconfinder.com/data/icons/logotypes/32/firefox-24.png\",\n\t\turl: \"https://www.mozilla.org/firefox\"\n\t},\n\t{\n\t\tvalue: \"AS\",\n\t\tlabel: \"Safari\",\n\t\ticon: \"https://cdn1.iconfinder.com/data/icons/logotypes/32/safari-24.png\",\n\t\turl: \"http://www.apple.com/safari/\"\n\t},\n\t{\n\t\tvalue: \"IE\",\n\t\tlabel: \"Internet Explorer\",\n\t\ticon: \"https://cdn1.iconfinder.com/data/icons/logotypes/32/internet-explorer-24.png\",\n\t\turl: \"http://windows.microsoft.com/internet-explorer\"\n\t}\n];"
 	}
 ])
