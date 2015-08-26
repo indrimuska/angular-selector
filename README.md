@@ -13,7 +13,7 @@ Angular Selector is a native AngularJS directive that transform a simple `<selec
 * **Remote Resource Loading**<br>
   Fetch your data from an external source and use it in your application.
 * **From HTML `<option>` to JS `object`**<br>
-  Fill your `<select>` from server-side ad use data-attributes for every option you have, then Angular Selector performs for you the conversion to a simple array of objects.
+  Fill your `<select>` from server-side ad use data-attributes for every option you have, then *Angular Selector* performs for you the conversion to a simple array of objects.
 * **Keyboard support**<br>
   Move up and down the dropdown list using keyboard arrows. Select highlighted item pressing Enter.
 * **Responsive**<br>
@@ -56,7 +56,7 @@ rtl | `Boolean` | `false` | 2-way bindable attribute to set a Right-To-Left text
 api | `Object` | `{}` | This object is equipped with the methods for interacting with the selector.
 remote | `Object` | <pre>{<br>  method: 'GET',<br>  cache: true,<br>  params: {}<br>}</pre> | Configuration object to pass to the native `$http` service ([docs](https://docs.angularjs.org/api/ng/service/$http#usage)).
 remoteParam | `String` | `"q"` | Name of the query key in the remote parameter object. You should use this parameter to perform server-side filtering.
-viewItemTemplate | `String` | `"selector/selector.html"` | Template URL of selected items(s).
+viewItemTemplate | `String` | `"selector/selector.html"` | Template URL of selected item(s).
 dropdownItemTemplate | `String` | `"selector/selector.html"` | Template URL of each item in the dropdown list.
 
 ### Contributions
