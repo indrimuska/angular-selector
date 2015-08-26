@@ -120,7 +120,7 @@
 						<ul class="nav nav-pills navbar-right">
 							<li ng-class="{active:tab=='view'}"><a ng-click="tab='view'">View</a></li>
 							<li ng-class="{active:tab=='html'}"><a ng-click="tab='html'">HTML</a></li>
-							<li ng-class="{active:tab=='js'}"><a ng-click="tab='js'" ng-if="example.js">JS</a></li>
+							<li ng-class="{active:tab=='js'}" ng-show="example.js"><a ng-click="tab='js'">JS</a></li>
 						</ul>
 						<h4 ng-bind="example.title"></h4>
 					</div>
