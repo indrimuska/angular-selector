@@ -280,7 +280,6 @@
 				};
 				scope.filterSelected = function () {
 					scope.filteredOptions = $filter('filter')(scope.options || [], scope.search);
-					console.log(scope.filteredOptions)
 					if (scope.multiple)
 						scope.filteredOptions = scope.filteredOptions.filter(function (option) {
 							var selector = angular.isArray(scope.selector) ? scope.selector : [scope.selector];
