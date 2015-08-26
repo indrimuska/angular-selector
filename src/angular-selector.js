@@ -8,7 +8,7 @@
 		function getStyles(element) {
 			return !(element instanceof HTMLElement) ? {} :
 				element.ownerDocument && element.ownerDocument.defaultView.opener
-					? ownerDocument.defaultView.getComputedStyle(element)
+					? element.ownerDocument.defaultView.getComputedStyle(element)
 					: window.getComputedStyle(element);
 		}
 		
