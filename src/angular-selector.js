@@ -78,13 +78,12 @@
 					scope.loading = true;
 					scope.options = [];
 					$http(settings)
-						.success(function (data) {
-							scope.options = data;
+						.then(function (data) {
+							scope.options = data.data;
 							scope.filterSelected();
 							scope.loading = false;
 							initDeferred.resolve();
-						})
-						.error(function () {
+						}, function () {
 							scope.loading = false;
 							initDeferred.reject();
 							throw 'Error while fetching data';
