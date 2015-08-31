@@ -18,18 +18,20 @@
 			this.replace    = true;
 			this.transclude = true;
 			this.scope      = {
-				value:                '=model',
-				multiple:             '=?multi',
-				placeholder:          '@?',
-				valueAttr:            '@',
-				labelAttr:            '@?',
-				options:              '=?',
-				rtl:                  '=?',
-				api:                  '=?',
-				remote:               '=?',
-				remoteParam:          '@?',
-				viewItemTemplate:     '=?',
-				dropdownItemTemplate: '=?'
+				value:                 '=model',
+				multiple:              '=?multi',
+				placeholder:           '@?',
+				valueAttr:             '@',
+				labelAttr:             '@?',
+				groupAttr:             '@?',
+				options:               '=?',
+				rtl:                   '=?',
+				api:                   '=?',
+				remote:                '=?',
+				remoteParam:           '@?',
+				viewItemTemplate:      '=?',
+				dropdownItemTemplate:  '=?',
+				dropdownGroupTemplate: '=?'
 			};
 			this.templateUrl = 'selector/selector.html';
 			$filter  = filter;
@@ -45,16 +47,18 @@
 					dropdown     = angular.element(element[0].querySelector('.selector-dropdown')),
 					initDeferred = $q.defer(),
 					defaults     = {
-						api:                  {},
-						selector:             [],
-						selected:             0,
-						showPlaceholder:      true,
-						valueAttr:            'value',
-						labelAttr:            'label',
-						options:              [],
-						remoteParam:          'q',
-						viewItemTemplate:     'selector/item-default.html',
-						dropdownItemTemplate: 'selector/item-default.html'
+						api:                   {},
+						selector:              [],
+						selected:              0,
+						showPlaceholder:       true,
+						valueAttr:             'value',
+						labelAttr:             'label',
+						groupAttr:             'group',
+						options:               [],
+						remoteParam:           'q',
+						viewItemTemplate:      'selector/item-default.html',
+						dropdownItemTemplate:  'selector/item-default.html',
+						dropdownGroupTemplate: 'selector/group-default.html'
 					};
 				
 				// Default attributes
@@ -97,35 +101,43 @@
 					scope.$watch('search', scope.fetch);
 				
 				// Fill with options in the select
+				scope.optionToObject = function (option, group) {
+					var object  = {},
+						element = angular.element(option);
+					
+					angular.forEach(option.dataset, function (value, key) {
+						if (!key.match(/^\$/)) object[key] = value;
+					});
+					if (option.value)
+						object[scope.valueAttr] = option.value;
+					if (element.text())
+						object[scope.labelAttr] = element.text();
+					if (angular.isDefined(group))
+						object[scope.groupAttr] = group;
+					scope.options.push(object);
+					
+					if (element.attr('selected') && (scope.multiple || !scope.value))
+						if (!scope.multiple) {
+							if (!scope.value) scope.value = object[scope.valueAttr];
+						} else {
+							if (!scope.value) scope.value = [];
+							scope.value.push(object[scope.valueAttr]);
+						}
+				};
 				scope.fillWithHtml = function () {
-					var hasValue = scope.hasValue();
 					scope.options = [];
-					angular.forEach(clone, function (option) {
-						var object  = {},
-							element = angular.element(option),
-							tagName = (option.tagName || '').toLowerCase();
+					angular.forEach(clone, function (element) {
+						var tagName = (element.tagName || '').toLowerCase();
 						
-						if (tagName != 'option') return;
-						
-						angular.forEach(option.dataset, function (value, key) {
-							if (!key.match(/^\$/)) object[key] = value;
-						});
-						if (option.value)
-							object[scope.valueAttr] = option.value;
-						if (element.text())
-							object[scope.labelAttr] = element.text();
-						scope.options.push(object);
-						
-						if (!hasValue && element.attr('selected') && (scope.multiple || !scope.value))
-							if (!scope.multiple) {
-								if (!scope.value) scope.value = object[scope.valueAttr];
-							} else {
-								if (!scope.value) scope.value = [];
-								scope.value.push(object[scope.valueAttr]);
-							}
+						if (tagName == 'option') scope.optionToObject(element);
+						if (tagName == 'optgroup') {
+							angular.forEach(element.querySelectorAll('option'), function (option) {
+								scope.optionToObject(option, (element.attributes.label || {}).value);
+							});
+						}
 					});
 					scope.updateSelector();
-				}
+				};
 				
 				// Initialization
 				scope.hasValue = function () {
@@ -432,12 +444,15 @@
 						'</div>' +
 					'</label>' +
 					'<ul class="selector-dropdown" ng-show="filteredOptions.length > 0">' +
-						'<li ng-repeat="(index, option) in filteredOptions track by index" ng-class="{active: selected == index}" ng-include="dropdownItemTemplate" ' +
-							'ng-mouseover="select(index)" ng-click="set()"></li>' +
+						'<li ng-repeat-start="(index, option) in filteredOptions track by index" class="selector-optgroup" ' +
+							'ng-include="dropdownGroupTemplate" ng-show="option[groupAttr] && index == 0 || filteredOptions[index-1][groupAttr] != option[groupAttr]"></li>' +
+						'<li ng-repeat-end ng-class="{active: selected == index, grouped: option[groupAttr]}" class="selector-option" ' +
+							'ng-include="dropdownItemTemplate" ng-mouseover="select(index)" ng-click="set()"></li>' +
 					'</ul>' +
 				'</div>'
 			);
 			$templateCache.put('selector/item-default.html', '<span ng-bind="option[labelAttr]"></span>');
+			$templateCache.put('selector/group-default.html', '<span ng-bind="option[groupAttr]"></span>');
 		}])
 		.directive('selector', ['$filter', '$timeout', '$window', '$http', '$q', function ($filter, $timeout, $window, $http, $q) {
 			return new Selector($filter, $timeout, $window, $http, $q);

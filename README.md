@@ -54,12 +54,14 @@ placeholder | `String` | | Optional placeholder text to display if input is empt
 options | `Array` | `[]` | Set of options to display.<br><br>If you don't use a custom template (`viewItemTemplate` and `dropdownItemTemplate`) and you don't change the default values of `valueAttr` and `labelAttr`, each option in this array must contain a `label` key and a `value` key.
 valueAttr | `String` | `"value"` | Name of the value key in options array.
 labelAttr | `String` | `"label"` | Name of the label key in options array.
+groupAttr | `String` | `"group"` | Name of the `optgroup` label key in options array. It allows to group items by the selected key. Items have to be already sorted to see the groups just one time.
 rtl | `Boolean` | `false` | 2-way bindable attribute to set a Right-To-Left text direction.
 api | `Object` | `{}` | This object is equipped with the methods for interacting with the selector.
 remote | `Object` | <pre>{<br>  method: 'GET',<br>  cache: true,<br>  params: {}<br>}</pre> | Configuration object to pass to the native `$http` service ([docs](https://docs.angularjs.org/api/ng/service/$http#usage)).
 remoteParam | `String` | `"q"` | Name of the query key in the remote parameter object. You should use this parameter to perform server-side filtering.
-viewItemTemplate | `String` | `"selector/selector.html"` | Template URL of selected item(s).
-dropdownItemTemplate | `String` | `"selector/selector.html"` | Template URL of each item in the dropdown list.
+viewItemTemplate | `String` | `"selector/item-default.html"` | Template URL of selected item(s).
+dropdownItemTemplate | `String` | `"selector/item-default.html"` | Template URL of each item in the dropdown list.
+dropdownGroupTemplate | `String` | `"selector/group-default.html"` | Template URL of each group (header) in the dropdown list.
 
 ### Contributions
 
