@@ -78,13 +78,12 @@
 					scope.loading = true;
 					scope.options = [];
 					$http(settings)
-						.success(function (data) {
-							scope.options = data;
+						.then(function (data) {
+							scope.options = data.data;
 							scope.filterSelected();
 							scope.loading = false;
 							initDeferred.resolve();
-						})
-						.error(function () {
+						}, function () {
 							scope.loading = false;
 							initDeferred.reject();
 							throw 'Error while fetching data';
@@ -175,33 +174,35 @@
 				};
 				scope.decrementSelected = function () {
 					scope.select(scope.selected - 1);
+					scope.scrollToSelected();
 				};
 				scope.incrementSelected = function () {
 					scope.select(scope.selected + 1);
+					scope.scrollToSelected();
 				};
 				scope.select = function (index) {
 					if (scope.filteredOptions.length)
 						scope.selected = (scope.filteredOptions.length + index) % scope.filteredOptions.length;
 				};
-				scope.$watch('selected', function (actual, previous) {
-					var dp           = dropdown[0],
+				scope.scrollToSelected = function () {
+					var dd           = dropdown[0],
 						option       = dropdown.find('li')[scope.selected],
 						styles       = getStyles(option),
 						marginTop    = parseFloat(styles.marginTop || 0),
 						marginBottom = parseFloat(styles.marginBottom || 0);
 					
-					if (actual == previous || !scope.filteredOptions.length) return;
+					if (!scope.filteredOptions.length) return;
 					
-					if (option.offsetTop + option.offsetHeight + marginBottom > dp.scrollTop + dp.offsetHeight)
+					if (option.offsetTop + option.offsetHeight + marginBottom > dd.scrollTop + dd.offsetHeight)
 						$timeout(function () {
-							dp.scrollTop = option.offsetTop + option.offsetHeight + marginBottom - dp.offsetHeight;
+							dd.scrollTop = option.offsetTop + option.offsetHeight + marginBottom - dd.offsetHeight;
 						});
 					
-					if (option.offsetTop - marginTop < dp.scrollTop)
+					if (option.offsetTop - marginTop < dd.scrollTop)
 						$timeout(function () {
-							dp.scrollTop = option.offsetTop - marginTop;
+							dd.scrollTop = option.offsetTop - marginTop;
 						});
-				});
+				};
 				scope.set = function (option) {
 					if (!angular.isDefined(option))
 						option = scope.filteredOptions[scope.selected];
