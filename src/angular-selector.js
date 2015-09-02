@@ -29,6 +29,7 @@
 				api:                   '=?',
 				remote:                '=?',
 				remoteParam:           '@?',
+				removeButton:          '=?',
 				viewItemTemplate:      '=?',
 				dropdownItemTemplate:  '=?',
 				dropdownGroupTemplate: '=?'
@@ -56,6 +57,7 @@
 						groupAttr:             'group',
 						options:               [],
 						remoteParam:           'q',
+						removeButton:          true,
 						viewItemTemplate:      'selector/item-default.html',
 						dropdownItemTemplate:  'selector/item-default.html',
 						dropdownGroupTemplate: 'selector/group-default.html'
@@ -428,7 +430,8 @@
 		.run(['$templateCache', function ($templateCache) {
 			$templateCache.put('selector/selector.html',
 				'<div class="selector" ng-attr-dir="{{rtl ? \'rtl\' : \'ltr\'}}" ' +
-					'ng-class="{open: isOpen, empty: !filteredOptions.length, multiple: multiple, \'has-value\': hasValue(), rtl: rtl, loading: loading}">' +
+					'ng-class="{open: isOpen, empty: !filteredOptions.length, multiple: multiple, \'has-value\': hasValue(), rtl: rtl, loading: loading, ' +
+						'\'remove-button\': removeButton}">' +
 					'<label class="selector-input">' +
 						'<ul class="selector-values">' +
 							'<li ng-repeat="(index, option) in selector track by index">' +

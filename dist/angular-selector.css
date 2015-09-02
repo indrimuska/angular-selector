@@ -9,7 +9,7 @@
 .selector { font-size: 1em; line-height: normal; color: #495c68; text-shadow: 0px 1px 0px rgba(255, 255, 255, .5); }
 .selector-input { display: inline-block; position: relative; width: 100%; padding: .8em 2.6em .7em .7em; overflow: hidden; cursor: pointer; border: 1px solid #bbb;
 	-webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .05), inset 0 1px 0 rgba(255, 255, 255, .8); box-shadow: 0 1px 0 rgba(0, 0, 0, .05), inset 0 1px 0 rgba(255, 255, 255, .8);
-	-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-border-radius: 4px; border-radius: 4px; font-weight: normal;
+	-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-border-radius: 4px; border-radius: 4px; font-weight: inherit;
 	background-color: #f9f9f9;
 	background-image: -webkit-linear-gradient(#fafafa, #eee);
 	background-image:    -moz-linear-gradient(#fafafa, #eee);
@@ -21,8 +21,8 @@
 .selector input { outline: none; background: none !important; border-color: transparent !important; width: 2px; display: inline-block; }
 
 /* Single */
-.selector.has-value .selector-input { padding-right: 3.5em }
-.selector.rtl.has-value .selector-input { padding-right: .7em; padding-left: 3.5em }
+.selector.remove-button.has-value .selector-input { padding-right: 3.5em }
+.selector.remove-button.has-value.rtl .selector-input { padding-right: .7em; padding-left: 3.5em }
 .selector.open .selector-input { background: none; border-bottom-color: #f0f0f0; padding-right: 2.6em;
 	-webkit-border-radius: 4px 4px 0 0; -moz-border-radius: 4px 4px 0 0; border-radius: 4px 4px 0 0; }
 .selector.rtl.open .selector-input { padding-right: .7em; padding-left: 2.6em; }
@@ -42,12 +42,12 @@
 .selector.multiple input,
 .selector.multiple .selector-values>li { padding: .2em .6em; margin: 0 .15em .25em; border-width: 1px; border-style: solid; float: left; line-height: normal; }
 .selector.multiple .selector-values>li { display: inline-block; position: relative; border-color: #0987d6; color: #fff; text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
-	font-weight: 300; -webkit-border-radius: 3px; border-radius: 3px; padding-right: 1.9em;
-	box-shadow: inset 0 1px 1px rgba(255, 255, 255, .5), 0 1px 1px rgba(0, 0, 0, .2);
+	font-weight: 300; -webkit-border-radius: 3px; border-radius: 3px; box-shadow: inset 0 1px 1px rgba(255, 255, 255, .5), 0 1px 1px rgba(0, 0, 0, .2);
 	background-color: #2dadef; }
-.selector.rtl.multiple input,
-.selector.rtl.multiple .selector-values>li { float: right; }
-.selector.rtl.multiple .selector-values>li { padding-right: .6em; padding-left: 1.9em; }
+.selector.multiple.remove-button .selector-values>li { padding-right: 1.9em; }
+.selector.multiple.rtl input,
+.selector.multiple.rtl .selector-values>li { float: right; }
+.selector.multiple.rtl.remove-button .selector-values>li { padding-right: .6em; padding-left: 1.9em; }
 
 /* Helper */
 .selector-helper { position: absolute; display: block; width: 2.6em; top: 0; right: 0; bottom: 0; }
@@ -59,10 +59,10 @@
 	width: 0; height: 0; border: .4em solid #888; border-left-color: transparent; border-right-color: transparent; border-bottom: none; }
 
 /* Unset */
-.selector.has-value .selector-helper { border-left: 1px solid #bbb; }
-.selector.rtl.has-value .selector-helper { border-left: none; border-right: 1px solid #bbb; }
-.selector.has-value .selector-icon { display: table; width: 100%; }
-.selector.has-value .selector-icon:after { content: '\00d7'; display: table-cell; position: relative; top: 0; left: 0; margin: 0; border: none;
+.selector.has-value.remove-button .selector-helper { border-left: 1px solid #bbb; }
+.selector.has-value.remove-button.rtl .selector-helper { border-left: none; border-right: 1px solid #bbb; }
+.selector.has-value.remove-button .selector-icon { display: table; width: 100%; }
+.selector.has-value.remove-button .selector-icon:after { content: '\00d7'; display: table-cell; position: relative; top: 0; left: 0; margin: 0; border: none;
 	height: 100%; text-align: center; vertical-align: middle; }
 
 /* Loading */
@@ -76,13 +76,14 @@
 .selector.open .selector-helper,
 .selector.loading .selector-global-helper { border-left: none; border-right: none; }
 
-.selector.multiple .selector-helper { width: 1.3em; border-left: 1px solid #0987d6; cursor: pointer; }
-.selector.multiple .selector-helper:hover { background: rgba(0, 0, 0, .1); }
-.selector.rtl.multiple .selector-helper { border-left: none; border-right: 1px solid #0987d6; }
+.selector.multiple .selector-helper { display: none; }
+.selector.multiple.remove-button .selector-helper { display: block; width: 1.3em; border-left: 1px solid #0987d6; cursor: pointer; }
+.selector.multiple.remove-button .selector-helper:hover { background: rgba(0, 0, 0, .1); }
+.selector.multiple.remove-button.rtl .selector-helper { border-left: none; border-right: 1px solid #0987d6; }
 .selector.multiple.loading .selector-input { padding-right: 3em !important; }
 .selector.multiple.loading .selector-global-helper { margin: .75em .8em; border-left: none; border-right: none; }
-.selector.rtl.multiple.loading .selector-input { padding-right: .55em !important; padding-left: 3em !important; }
-.selector.rtl.multiple.has-value.loading .selector-input { padding-right: .25em !important; }
+.selector.multiple.loading.rtl .selector-input { padding-right: .55em !important; padding-left: 3em !important; }
+.selector.multiple.loading.rtl.has-value .selector-input { padding-right: .25em !important; }
 
 /* Shadow */
 .selector-input input,
@@ -91,7 +92,7 @@
 .selector-input .selector-shadow { position: absolute; top: 0; left: 0; opacity: 0; visibility: hidden; white-space: pre; margin: 0;}
 
 /* Dropdown */
-.selector-dropdown { display: none; list-style: none; padding: 0 !important; margin: 0 !important; margin-top: -.08em !important; position: absolute; z-index: 1;
+.selector-dropdown { display: none; list-style: none; padding: 0 !important; margin: 0 !important; position: absolute; z-index: 1;
 	background: #fff; border: 1px solid #ccc; border-top: 0; max-height: 15.5em; overflow-x: hidden; overflow-y: auto; z-index: 1000;
 	-webkit-border-radius: 0 0 3px 3px; -moz-border-radius: 0 0 3px 3px; border-radius: 0 0 3px 3px;
 	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .1); box-shadow: 0 1px 3px rgba(0, 0, 0, .1);

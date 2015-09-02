@@ -17,7 +17,7 @@
 * **From HTML `<option>` to JS `object`**<br>
   Fill your `<select>` from server-side ad use data-attributes for every option you have, then *Angular Selector* performs for you the conversion to a simple array of objects.
 * **Keyboard support**<br>
-  Move up and down the dropdown list using keyboard arrows. Select highlighted item pressing Enter.
+  Move up and down the dropdown list using keyboard arrows. Select highlighted item pressing <kbd>Enter</kbd>. Remove last selected item with <kbd>Del</kbd> key.
 * **Responsive**<br>
   Perfect for use in mobile environments.
 
@@ -55,10 +55,11 @@ options | `Array` | `[]` | Set of options to display.<br><br>If you don't use a 
 valueAttr | `String` | `"value"` | Name of the value key in options array.
 labelAttr | `String` | `"label"` | Name of the label key in options array.
 groupAttr | `String` | `"group"` | Name of the `optgroup` label key in options array. It allows to group items by the selected key. Items have to be already sorted to see the groups just one time.
-rtl | `Boolean` | `false` | 2-way bindable attribute to set a Right-To-Left text direction.
+rtl | `Boolean` | `false` | Two-way bindable attribute to set a Right-To-Left text direction.
 api | `Object` | `{}` | This object is equipped with the methods for interacting with the selector.
 remote | `Object` | <pre>{<br>  method: 'GET',<br>  cache: true,<br>  params: {}<br>}</pre> | Configuration object to pass to the native `$http` service ([docs](https://docs.angularjs.org/api/ng/service/$http#usage)).
 remoteParam | `String` | `"q"` | Name of the query key in the remote parameter object. You should use this parameter to perform server-side filtering.
+removeButton | `Boolean` | `true` | Two-way bindable attribute to see the remove button (cross icon).
 viewItemTemplate | `String` | `"selector/item-default.html"` | Template URL of selected item(s).
 dropdownItemTemplate | `String` | `"selector/item-default.html"` | Template URL of each item in the dropdown list.
 dropdownGroupTemplate | `String` | `"selector/group-default.html"` | Template URL of each group (header) in the dropdown list.
