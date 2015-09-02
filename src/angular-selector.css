@@ -7,7 +7,7 @@
 [selector] { display: none; position: relative; }
 [selector].selector { display: block; }
 .selector { font-size: 1em; line-height: normal; color: #495c68; text-shadow: 0px 1px 0px rgba(255, 255, 255, .5); }
-.selector-input { display: inline-block; position: relative; width: 100%; padding: .8em 2.6em .7em .7em; overflow: hidden; cursor: pointer; border: 1px solid #bbb;
+.selector-input { display: block; margin: 0; position: relative; width: 100%; padding: .8em 2.6em .7em .7em; overflow: hidden; cursor: pointer; border: 1px solid #bbb;
 	-webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .05), inset 0 1px 0 rgba(255, 255, 255, .8); box-shadow: 0 1px 0 rgba(0, 0, 0, .05), inset 0 1px 0 rgba(255, 255, 255, .8);
 	-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; -webkit-border-radius: 4px; border-radius: 4px; font-weight: inherit;
 	background-color: #f9f9f9;
@@ -25,7 +25,7 @@
 .selector.remove-button.has-value.rtl .selector-input { padding-right: .7em; padding-left: 3.5em }
 .selector.open .selector-input { background: none; border-bottom-color: #f0f0f0; padding-right: 2.6em;
 	-webkit-border-radius: 4px 4px 0 0; -moz-border-radius: 4px 4px 0 0; border-radius: 4px 4px 0 0; }
-.selector.rtl.open .selector-input { padding-right: .7em; padding-left: 2.6em; }
+.selector.open.rtl .selector-input { padding-right: .7em; padding-left: 2.6em; }
 .selector.open.empty .selector-input { -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; border-bottom-color: #bbb; }
 .selector input,
 .selector .selector-values { float: left; }

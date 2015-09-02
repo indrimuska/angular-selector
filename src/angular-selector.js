@@ -442,7 +442,7 @@
 							'</li>' +
 						'</ul>' +
 						'<input class="selector" ng-model="search" placeholder="{{showPlaceholder ? placeholder : \'\'}}">' +
-						'<div ng-if="!multiple || loading" class="selector-helper selector-global-helper" ng-click="unset()">' +
+						'<div ng-if="!multiple || loading" class="selector-helper selector-global-helper" ng-click="removeButton && unset()">' +
 							'<span class="selector-icon"></span>' +
 						'</div>' +
 					'</label>' +
