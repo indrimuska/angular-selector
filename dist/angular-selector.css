@@ -18,7 +18,9 @@
 	background-image:         linear-gradient(#fafafa, #eee); }
 .selector.rtl .selector-input { padding-right: .7em; padding-left: 2.6em; }
 .selector .selector-values { list-style: none; padding: 0; margin: 0; display: block; }
-.selector input { outline: none; background: none !important; border-color: transparent !important; width: 2px; display: inline-block; }
+.selector input { outline: none; background: none !important; border-color: transparent !important; width: 2px; display: inline-block; cursor: pointer; }
+.selector.open input,
+.selector.has-value input { cursor: text; }
 
 /* Single */
 .selector.remove-button.has-value .selector-input { padding-right: 3.5em }
