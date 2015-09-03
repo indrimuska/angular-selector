@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 		},
 		uglify: {
 			options: {
-				banner: '/*! angular-selector - v<%= pkg.version %> - https://github.com/indrimuska/angular-selector - © 2015 Indri Muska - MIT */\n'
+				banner: '/*! angular-selector - v<%= pkg.version %> - https://github.com/indrimuska/angular-selector - (c) 2015 Indri Muska - MIT */\n'
 			},
 			main: {
 				files: {
