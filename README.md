@@ -52,7 +52,7 @@ model | `Property` | | Two-way binding property that models the `select` view.
 multi | `Boolean` | `false` | Allows to select more than one value. Note the name is `multi` not `multiple` to avoid collisions with the HTML5 multiple attribute.
 placeholder | `String` | | Optional placeholder text to display if input is empty.
 options | `Array` | `[]` | Set of options to display.<br><br>If you don't use a custom template (`viewItemTemplate` and `dropdownItemTemplate`) and you don't change the default values of `valueAttr` and `labelAttr`, each option in this array must contain a `label` key and a `value` key.
-valueAttr | `String` | `"value"` | Name of the value key in options array.
+valueAttr | `String` | `null` | Name of the value key in options array. This also sets the type of result for the model: if you don't set this attribute (`null` by default) the entire object option is returned, otherwise it will be returned only the selected property.
 labelAttr | `String` | `"label"` | Name of the label key in options array.
 groupAttr | `String` | `"group"` | Name of the `optgroup` label key in options array. It allows to group items by the selected key. Items have to be already sorted to see the groups just one time.
 rtl | `Boolean` | `false` | Two-way bindable attribute to set a Right-To-Left text direction.
