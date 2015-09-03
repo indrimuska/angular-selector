@@ -51,7 +51,6 @@
 						api:                   {},
 						selector:              [],
 						selected:              0,
-						showPlaceholder:       true,
 						valueAttr:             null,
 						labelAttr:             'label',
 						groupAttr:             'group',
@@ -323,7 +322,7 @@
 					var width,
 						styles = getStyles(input[0]),
 						shadow = angular.element('<span class="selector-shadow"></span>');
-					shadow.text(input.val() || (scope.showPlaceholder ? scope.placeholder : '') || '');
+					shadow.text(input.val() || (!scope.hasValue() ? scope.placeholder : '') || '');
 					input.parent().append(shadow);
 					angular.forEach(['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'letterSpacing', 'textTransform', 'wordSpacing', 'textIndent'], function (style) {
 						shadow.css(style, styles[style]);
@@ -375,7 +374,6 @@
 						}).filter(function (value) { return angular.isDefined(value); });
 				};
 				scope.$watch('value', function (newValue, oldValue) {
-					scope.showPlaceholder = angular.isArray(newValue) ? !newValue.length : scope.valueAttr == null ? angular.equals({}, newValue) : !newValue;
 					if (angular.equals(newValue, oldValue) || scope.remote) return;
 					scope.updateSelector();
 				}, true);
@@ -454,7 +452,7 @@
 								'</div>' +
 							'</li>' +
 						'</ul>' +
-						'<input class="selector" ng-model="search" placeholder="{{showPlaceholder ? placeholder : \'\'}}">' +
+						'<input class="selector" ng-model="search" placeholder="{{!hasValue() ? placeholder : \'\'}}">' +
 						'<div ng-if="!multiple || loading" class="selector-helper selector-global-helper" ng-click="removeButton && unset()">' +
 							'<span class="selector-icon"></span>' +
 						'</div>' +
