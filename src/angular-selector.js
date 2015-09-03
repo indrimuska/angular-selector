@@ -52,7 +52,7 @@
 						selector:              [],
 						selected:              0,
 						showPlaceholder:       true,
-						valueAttr:             'value',
+						valueAttr:             null,
 						labelAttr:             'label',
 						groupAttr:             'group',
 						options:               [],
@@ -72,6 +72,23 @@
 				angular.forEach(['valueAttr', 'labelAttr'], function (attr) {
 					if (!attrs[attr]) attrs[attr] = scope[attr];
 				});
+				
+				// Options' utilities
+				scope.optionValue = function (option) {
+					return scope.valueAttr == null ? option : option[scope.valueAttr];
+				};
+				scope.optionEquals = function (option, value) {
+					return angular.equals(scope.optionValue(option), angular.isDefined(value) ? value : scope.value);
+				};
+				
+				// Value utilities
+				scope.setValue = function (value) {
+					if (!scope.multiple) scope.value = scope.valueAttr == null ? (value || {}) : (value || {})[scope.valueAttr];
+					else scope.value = scope.valueAttr == null ? (value || []) : (value || []).map(function (option) { return option[scope.valueAttr]; });
+				};
+				scope.hasValue = function () {
+					return scope.multiple ? (scope.value || []).length > 0 : (scope.valueAttr == null ? !angular.equals({}, scope.value) : scope.value);
+				};
 				
 				// Remote fetching
 				scope.fetch = function () {
@@ -111,19 +128,19 @@
 						if (!key.match(/^\$/)) object[key] = value;
 					});
 					if (option.value)
-						object[scope.valueAttr] = option.value;
+						object[scope.valueAttr || 'value'] = option.value;
 					if (element.text())
 						object[scope.labelAttr] = element.text();
 					if (angular.isDefined(group))
 						object[scope.groupAttr] = group;
 					scope.options.push(object);
 					
-					if (element.attr('selected') && (scope.multiple || !scope.value))
+					if (element.attr('selected') && (scope.multiple || !scope.hasValue()))
 						if (!scope.multiple) {
-							if (!scope.value) scope.value = object[scope.valueAttr];
+							if (!scope.value) scope.value = scope.optionValue(object);
 						} else {
 							if (!scope.value) scope.value = [];
-							scope.value.push(object[scope.valueAttr]);
+							scope.value.push(scope.optionValue(object));
 						}
 				};
 				scope.fillWithHtml = function () {
@@ -142,9 +159,6 @@
 				};
 				
 				// Initialization
-				scope.hasValue = function () {
-					return !scope.multiple ? scope.value : (scope.value || []).length > 0;
-				};
 				scope.initialize = function () {
 					if (!scope.remote && (!angular.isArray(scope.options) || !scope.options.length))
 						scope.fillWithHtml();
@@ -339,8 +353,7 @@
 				// Update value
 				scope.updateValue = function (origin) {
 					if (!angular.isDefined(origin)) origin = scope.selector;
-					if (!scope.multiple) scope.value = (origin[0] || {})[scope.valueAttr];
-					else scope.value = (origin || []).map(function (option) { return option[scope.valueAttr]; });
+					scope.setValue(!scope.multiple ? origin[0] : origin);
 				};
 				scope.$watch('selector', function (newValue, oldValue) {
 					if (angular.equals(newValue, oldValue)) return;
@@ -353,16 +366,16 @@
 				
 				// Update selector
 				scope.updateSelector = function () {
-					if (!scope.multiple) scope.selector = (scope.options || []).filter(function (option) { return option[scope.valueAttr] == scope.value; }).slice(0, 1);
+					if (!scope.multiple) scope.selector = (scope.options || []).filter(function (option) { return scope.optionEquals(option); }).slice(0, 1);
 					else
 						scope.selector = (scope.value || []).map(function (value) {
 							return $filter('filter')(scope.options, function (option) {
-								return option[scope.valueAttr] == value;
+								return scope.optionEquals(option, value);
 							})[0];
 						}).filter(function (value) { return angular.isDefined(value); });
 				};
 				scope.$watch('value', function (newValue, oldValue) {
-					scope.showPlaceholder = angular.isArray(newValue) ? !newValue.length : !newValue;
+					scope.showPlaceholder = angular.isArray(newValue) ? !newValue.length : scope.valueAttr == null ? angular.equals({}, newValue) : !newValue;
 					if (angular.equals(newValue, oldValue) || scope.remote) return;
 					scope.updateSelector();
 				}, true);
@@ -402,14 +415,14 @@
 					input[0].focus();
 				};
 				scope.api.set = function (value) {
-					var search = (scope.filteredOptions || []).filter(function (option) { return option[scope.valueAttr] == value; });
+					var search = (scope.filteredOptions || []).filter(function (option) { return scope.optionEquals(option, value); });
 					
 					angular.forEach(search, function (option) {
 						scope.set(option);
 					});
 				};
 				scope.api.unset = function (value) {
-					var values  = !value ? scope.selector : (scope.selector || []).filter(function (option) { return option[scope.valueAttr] == value; });
+					var values  = !value ? scope.selector : (scope.selector || []).filter(function (option) { return scope.optionEquals(option, value); });
 						indexes =
 							scope.selector.map(function (option, index) {
 								return scope.inOptions(values, option) ? index : -1;
