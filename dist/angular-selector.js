@@ -129,7 +129,7 @@
 					if (option.value)
 						object[scope.valueAttr || 'value'] = option.value;
 					if (element.text())
-						object[scope.labelAttr] = element.text();
+						object[scope.labelAttr] = element.text().trim();
 					if (angular.isDefined(group))
 						object[scope.groupAttr] = group;
 					scope.options.push(object);
