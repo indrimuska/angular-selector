@@ -49,8 +49,8 @@
 					initDeferred = $q.defer(),
 					defaults     = {
 						api:                   {},
-						selector:              [],
-						selected:              0,
+						selectedValues:        [],
+						highlighted:           0,
 						valueAttr:             null,
 						labelAttr:             'label',
 						groupAttr:             'group',
@@ -154,7 +154,7 @@
 							});
 						}
 					});
-					scope.updateSelector();
+					scope.updateSelected();
 				};
 				
 				// Initialization
@@ -167,7 +167,7 @@
 						} else {
 							if (!angular.isArray(scope.value)) scope.value = [scope.value];
 						}
-						scope.updateSelector();
+						scope.updateSelected();
 						scope.filterSelected();
 						scope.updateValue();
 					}
@@ -199,21 +199,21 @@
 					scope.isOpen = false;
 					scope.resetInput();
 				};
-				scope.decrementSelected = function () {
-					scope.select(scope.selected - 1);
-					scope.scrollToSelected();
+				scope.decrementHighlighted = function () {
+					scope.highlight(scope.highlighted - 1);
+					scope.scrollToHighlighted();
 				};
-				scope.incrementSelected = function () {
-					scope.select(scope.selected + 1);
-					scope.scrollToSelected();
+				scope.incrementHighlighted = function () {
+					scope.highlight(scope.highlighted + 1);
+					scope.scrollToHighlighted();
 				};
-				scope.select = function (index) {
+				scope.highlight = function (index) {
 					if (scope.filteredOptions.length)
-						scope.selected = (scope.filteredOptions.length + index) % scope.filteredOptions.length;
+						scope.highlighted = (scope.filteredOptions.length + index) % scope.filteredOptions.length;
 				};
-				scope.scrollToSelected = function () {
+				scope.scrollToHighlighted = function () {
 					var dd           = dropdown[0],
-						option       = dropdown.find('li')[scope.selected],
+						option       = dd.querySelectorAll('li.selector-option')[scope.highlighted],
 						styles       = getStyles(option),
 						marginTop    = parseFloat(styles.marginTop || 0),
 						marginBottom = parseFloat(styles.marginBottom || 0);
@@ -232,35 +232,35 @@
 				};
 				scope.set = function (option) {
 					if (!angular.isDefined(option))
-						option = scope.filteredOptions[scope.selected];
+						option = scope.filteredOptions[scope.highlighted];
 					
-					if (!scope.multiple) scope.selector = [option];
+					if (!scope.multiple) scope.selectedValues = [option];
 					else {
-						if (scope.selector.indexOf(option) < 0)
-							scope.selector.push(option);
+						if (scope.selectedValues.indexOf(option) < 0)
+							scope.selectedValues.push(option);
 					}
 					if (!scope.multiple) scope.close();
 					scope.resetInput();
 				};
 				scope.unset = function (index) {
-					if (!scope.multiple) scope.selector = [];
-					else scope.selector.splice(angular.isDefined(index) ? index : scope.selector.length - 1, 1);
+					if (!scope.multiple) scope.selectedValues = [];
+					else scope.selectedValues.splice(angular.isDefined(index) ? index : scope.selectedValues.length - 1, 1);
 					scope.resetInput();
 				};
 				scope.keydown = function (e) {
 					switch (e.keyCode) {
 						case KEYS.up:
 							if (!scope.isOpen) break;
-							scope.decrementSelected();
+							scope.decrementHighlighted();
 							e.preventDefault();
 							break;
 						case KEYS.down:
 							if (!scope.isOpen) scope.open();
-							else scope.incrementSelected();
+							else scope.incrementHighlighted();
 							e.preventDefault();
 							break;
 						case KEYS.escape:
-							scope.select(0);
+							scope.highlight(0);
 							scope.close();
 							break;
 						case KEYS.enter:
@@ -290,7 +290,7 @@
 								e.preventDefault();
 							} else {
 								scope.open();
-								scope.select(0);
+								scope.highlight(0);
 							}
 							break;
 					}
@@ -310,11 +310,11 @@
 					scope.filteredOptions = $filter('filter')(scope.options || [], scope.search);
 					if (scope.multiple)
 						scope.filteredOptions = scope.filteredOptions.filter(function (option) {
-							var selector = angular.isArray(scope.selector) ? scope.selector : [scope.selector];
-							return !scope.inOptions(selector, option);
+							var selectedValues = angular.isArray(scope.selectedValues) ? scope.selectedValues : [scope.selectedValues];
+							return !scope.inOptions(selectedValues, option);
 						});
-					if (scope.selected >= scope.filteredOptions.length)
-						scope.select(scope.filteredOptions.length - 1);
+					if (scope.highlighted >= scope.filteredOptions.length)
+						scope.highlight(scope.filteredOptions.length - 1);
 				};
 				
 				// Input width utilities
@@ -351,23 +351,23 @@
 				
 				// Update value
 				scope.updateValue = function (origin) {
-					if (!angular.isDefined(origin)) origin = scope.selector;
+					if (!angular.isDefined(origin)) origin = scope.selectedValues;
 					scope.setValue(!scope.multiple ? origin[0] : origin);
 				};
-				scope.$watch('selector', function (newValue, oldValue) {
+				scope.$watch('selectedValues', function (newValue, oldValue) {
 					if (angular.equals(newValue, oldValue)) return;
 					scope.updateValue();
 				}, true);
 				scope.$watch('options', function (newValue, oldValue) {
 					if (angular.equals(newValue, oldValue) || scope.remote) return;
-					scope.updateSelector();
+					scope.updateSelected();
 				});
 				
-				// Update selector
-				scope.updateSelector = function () {
-					if (!scope.multiple) scope.selector = (scope.options || []).filter(function (option) { return scope.optionEquals(option); }).slice(0, 1);
+				// Update selected values
+				scope.updateSelected = function () {
+					if (!scope.multiple) scope.selectedValues = (scope.options || []).filter(function (option) { return scope.optionEquals(option); }).slice(0, 1);
 					else
-						scope.selector = (scope.value || []).map(function (value) {
+						scope.selectedValues = (scope.value || []).map(function (value) {
 							return $filter('filter')(scope.options, function (option) {
 								return scope.optionEquals(option, value);
 							})[0];
@@ -375,7 +375,7 @@
 				};
 				scope.$watch('value', function (newValue, oldValue) {
 					if (angular.equals(newValue, oldValue) || scope.remote) return;
-					scope.updateSelector();
+					scope.updateSelected();
 				}, true);
 				
 				// DOM event listeners
@@ -420,9 +420,9 @@
 					});
 				};
 				scope.api.unset = function (value) {
-					var values  = !value ? scope.selector : (scope.selector || []).filter(function (option) { return scope.optionEquals(option, value); });
+					var values  = !value ? scope.selectedValues : (scope.selectedValues || []).filter(function (option) { return scope.optionEquals(option, value); });
 						indexes =
-							scope.selector.map(function (option, index) {
+							scope.selectedValues.map(function (option, index) {
 								return scope.inOptions(values, option) ? index : -1;
 							}).filter(function (index) { return index >= 0; });
 					
@@ -445,7 +445,7 @@
 						'\'remove-button\': removeButton}">' +
 					'<label class="selector-input">' +
 						'<ul class="selector-values">' +
-							'<li ng-repeat="(index, option) in selector track by index">' +
+							'<li ng-repeat="(index, option) in selectedValues track by index">' +
 								'<div ng-include="viewItemTemplate"></div>' +
 								'<div ng-if="multiple" class="selector-helper" ng-click="unset(index)">' +
 									'<span class="selector-icon"></span>' +
@@ -460,8 +460,8 @@
 					'<ul class="selector-dropdown" ng-show="filteredOptions.length > 0">' +
 						'<li ng-repeat-start="(index, option) in filteredOptions track by index" class="selector-optgroup" ' +
 							'ng-include="dropdownGroupTemplate" ng-show="option[groupAttr] && index == 0 || filteredOptions[index-1][groupAttr] != option[groupAttr]"></li>' +
-						'<li ng-repeat-end ng-class="{active: selected == index, grouped: option[groupAttr]}" class="selector-option" ' +
-							'ng-include="dropdownItemTemplate" ng-mouseover="select(index)" ng-click="set()"></li>' +
+						'<li ng-repeat-end ng-class="{active: highlighted == index, grouped: option[groupAttr]}" class="selector-option" ' +
+							'ng-include="dropdownItemTemplate" ng-mouseover="highlight(index)" ng-click="set()"></li>' +
 					'</ul>' +
 				'</div>'
 			);
