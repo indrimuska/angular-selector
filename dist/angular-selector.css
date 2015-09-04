@@ -21,6 +21,7 @@
 .selector input { outline: none; background: none !important; border-color: transparent !important; width: 2px; display: inline-block; cursor: pointer; }
 .selector.open input,
 .selector.has-value input { cursor: text; }
+.selector.disabled { opacity: .6; }
 
 /* Single */
 .selector.remove-button.has-value .selector-input { padding-right: 3.5em }

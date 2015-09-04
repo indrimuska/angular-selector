@@ -19,6 +19,7 @@
 			this.transclude = true;
 			this.scope      = {
 				value:                 '=model',
+				disable:               '=',
 				multiple:              '=?multi',
 				placeholder:           '@?',
 				valueAttr:             '@',
@@ -442,18 +443,18 @@
 			$templateCache.put('selector/selector.html',
 				'<div class="selector" ng-attr-dir="{{rtl ? \'rtl\' : \'ltr\'}}" ' +
 					'ng-class="{open: isOpen, empty: !filteredOptions.length, multiple: multiple, \'has-value\': hasValue(), rtl: rtl, loading: loading, ' +
-						'\'remove-button\': removeButton}">' +
+						'\'remove-button\': removeButton, disabled: disable}">' +
 					'<label class="selector-input">' +
 						'<ul class="selector-values">' +
 							'<li ng-repeat="(index, option) in selectedValues track by index">' +
 								'<div ng-include="viewItemTemplate"></div>' +
-								'<div ng-if="multiple" class="selector-helper" ng-click="unset(index)">' +
+								'<div ng-if="multiple" class="selector-helper" ng-click="!disable && unset(index)">' +
 									'<span class="selector-icon"></span>' +
 								'</div>' +
 							'</li>' +
 						'</ul>' +
-						'<input class="selector" ng-model="search" placeholder="{{!hasValue() ? placeholder : \'\'}}">' +
-						'<div ng-if="!multiple || loading" class="selector-helper selector-global-helper" ng-click="removeButton && unset()">' +
+						'<input class="selector" ng-model="search" placeholder="{{!hasValue() ? placeholder : \'\'}}" ng-disabled="disable">' +
+						'<div ng-if="!multiple || loading" class="selector-helper selector-global-helper" ng-click="!disable && removeButton && unset()">' +
 							'<span class="selector-icon"></span>' +
 						'</div>' +
 					'</label>' +

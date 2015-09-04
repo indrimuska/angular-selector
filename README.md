@@ -51,6 +51,7 @@ Look at [these](http://indrimuska.github.io/angular-selector/).
 Parameter | Type | Default | Description
 ---|---|---|---
 model | `Property` | | Two-way binding property that models the `select` view.
+disable | `Boolean` | `false` | Enable/disable the select. Note the name is `disable` not `disabled` to avoid collisions with the HTML5 multiple attribute.
 multi | `Boolean` | `false` | Allows to select more than one value. Note the name is `multi` not `multiple` to avoid collisions with the HTML5 multiple attribute.
 placeholder | `String` | | Optional placeholder text to display if input is empty.
 options | `Array` | `[]` | Set of options to display.<br><br>If you don't use a custom template (`viewItemTemplate` and `dropdownItemTemplate`) and you don't change the default values of `valueAttr` and `labelAttr`, each option in this array must contain a `label` key and a `value` key.
