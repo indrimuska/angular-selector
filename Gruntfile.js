@@ -1,13 +1,19 @@
 module.exports = function(grunt) {
 	
 	// Load plugins
-	grunt.loadNpmTasks('grunt-contrib-copy');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	require('load-grunt-tasks')(grunt);
 	
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
+		bumpup: {
+			options: {
+	            updateProps: {
+	                pkg: 'package.json'
+	            }
+	        },
+	        file: 'package.json'
+		},
 		copy: {
 			main: {
 				files: {
@@ -36,10 +42,21 @@ module.exports = function(grunt) {
 					'dist/angular-selector.min.css': ['dist/angular-selector.css']
 				}
 			}
+		},
+		'sync-json': {
+			options: {
+				include: ['name', 'description', 'version']
+			},
+			bower: {
+				files: {
+					"bower.json": "package.json"
+				}
+			}
 		}
 	});
 	
 	// Default tasks.
-	grunt.registerTask('default', ['copy', 'uglify', 'cssmin']);
+	grunt.registerTask('default', ['copy', 'uglify', 'cssmin', 'sync-json']);
+	grunt.registerTask('update-patch', ['bumpup:patch', 'default']);
 	
 };
