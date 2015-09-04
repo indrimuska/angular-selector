@@ -2,6 +2,8 @@
 
 *Angular Selector* is a native AngularJS directive that transform a simple `<select>` box into a full html select with typeahead.
 
+Check out the examples page to learn more: [http://indrimuska.github.io/angular-selector](http://indrimuska.github.io/angular-selector).
+
 ![Angular Selector](https://cloud.githubusercontent.com/assets/1561134/9519130/6617db5c-4cbc-11e5-8578-e123de99d23f.png)
 
 ### Features

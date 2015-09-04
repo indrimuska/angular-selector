@@ -1,6 +1,6 @@
 {
   "name": "angular-selector",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "A native AngularJS directive that transform a simple <select> box into a full html select with typeahead.",
   "main": "Gruntfile.js",
   "repository": {
@@ -20,6 +20,9 @@
     "url": "https://github.com/indrimuska/angular-selector/issues"
   },
   "homepage": "http://indrimuska.github.io/angular-selector",
+  "dependencies": {
+    "angular": "~1.4.4"
+  },
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-bumpup": "^0.6.2",
