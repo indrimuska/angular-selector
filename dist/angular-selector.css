@@ -17,7 +17,7 @@
 	background-image:      -o-linear-gradient(#fafafa, #eee);
 	background-image:         linear-gradient(#fafafa, #eee); }
 .selector.rtl .selector-input { padding-right: .7em; padding-left: 2.6em; }
-.selector .selector-values { list-style: none; padding: 0; margin: 0; display: block; }
+.selector .selector-values { list-style: none; }
 .selector input { outline: none; background: none !important; border-color: transparent !important; width: 2px; display: inline-block; cursor: pointer; }
 .selector.open input,
 .selector.has-value input { cursor: text; }
@@ -30,12 +30,14 @@
 	-webkit-border-radius: 4px 4px 0 0; -moz-border-radius: 4px 4px 0 0; border-radius: 4px 4px 0 0; }
 .selector.open.rtl .selector-input { padding-right: .7em; padding-left: 2.6em; }
 .selector.open.empty .selector-input { -webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px; border-bottom-color: #bbb; }
+.selector.multiple input,
+.selector.multiple .selector-values { float: left; }
+.selector.multiple.rtl input,
+.selector.multiple.rtl .selector-values { float: right; }
 .selector input,
-.selector .selector-values { float: left; }
-.selector.rtl input,
-.selector.rtl .selector-values { float: right; }
-.selector input,
-.selector .selector-values>li { padding: 0; margin: 0; border: 0; }
+.selector .selector-values,
+.selector .selector-values>li,
+.selector .selector-values>li>div { padding: 0; margin: 0; border: 0; display: inline; }
 
 /* Multiple */
 .selector.multiple .selector-input { padding: .5em .55em .2em .55em !important; cursor: text; background: #fff;
@@ -76,8 +78,8 @@
 	-webkit-animation: selector-rotate .5s linear infinite; -moz-animation: selector-rotate .5s linear infinite; -o-animation: selector-rotate .5s linear infinite;
 	animation: selector-rotate .5s linear infinite; -webkit-border-radius: 100%; -moz-border-radius: 100%; border-radius: 100%; }
 
-.selector.open .selector-helper,
-.selector.loading .selector-global-helper { border-left: none; border-right: none; }
+.selector.open .selector-global-helper,
+.selector.loading .selector-global-helper { border-left: none !important; border-right: none !important; }
 
 .selector.multiple .selector-helper { display: none; }
 .selector.multiple.remove-button .selector-helper { display: block; width: 1.3em; border-left: 1px solid #0987d6; cursor: pointer; }
