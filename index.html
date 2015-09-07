@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="AngularSelectorDemo">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml" ng-app="AngularSelectorDemo">
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,6 +10,14 @@
 		<meta name="author" content="Indri Muska <indrimuska@gmail.com>">
 		<meta name="keywords" content="select angular selector directive typeahead">
 		
+		<!-- Open Graph Meta Tags -->
+		<meta property="og:title" content="Angular Selector">
+		<meta property="og:site_name" content="Angular Selector">
+		<meta property="og:url" content="http://indrimuska.github.io/angular-selector/">
+		<meta property="og:description" content="Angular Selector is a native AngularJS directive that transform a simple <select> box into a full html select with typeahead.">
+		<meta property="og:type" content="website">
+		<meta property="twitter:domain" content="indrimuska.github.io">
+		
 		<!-- Stylesheets -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
@@ -18,7 +26,7 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/github.min.css">
 		<link rel="stylesheet" href="https://rawgit.com/Arnoud-B/csscountrycodes/master/flags.css">
 	</head>
-	<body ng-controller="AngularSelectorDemoCtrl">
+	<body ng-controller="AngularSelectorDemoCtrl" itemscope itemtype="http://schema.org/SoftwareApplication">
 		<div class="container">
 			<div class="header clearfix">
 				<nav>
@@ -32,7 +40,7 @@
 		
 		<div class="jumbotron">
 			<div class="container">
-				<h1 class="pacifico">Angular Selector</h1>
+				<h1 class="pacifico" itemprop="name">Angular Selector</h1>
 				<p class="lead">
 					Angular Selector is a native AngularJS directive that transform a simple <code>&lt;select&gt;</code> box into a full html select with typeahead.
 				</p>
