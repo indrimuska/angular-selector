@@ -18,6 +18,7 @@
 			this.replace    = true;
 			this.transclude = true;
 			this.scope      = {
+				name:                  '@?',
 				value:                 '=model',
 				disabled:              '=?disable',
 				multiple:              '=?multi',
@@ -69,7 +70,7 @@
 				angular.forEach(defaults, function (value, key) {
 					if (!angular.isDefined(scope[key])) scope[key] = value;
 				});
-				angular.forEach(['valueAttr', 'labelAttr'], function (attr) {
+				angular.forEach(['name', 'valueAttr', 'labelAttr'], function (attr) {
 					if (!attrs[attr]) attrs[attr] = scope[attr];
 				});
 				
@@ -444,6 +445,8 @@
 				'<div class="selector" ng-attr-dir="{{rtl ? \'rtl\' : \'ltr\'}}" ' +
 					'ng-class="{open: isOpen, empty: !filteredOptions.length, multiple: multiple, \'has-value\': hasValue(), rtl: rtl, loading: loading, ' +
 						'\'remove-button\': removeButton, disabled: disabled}">' +
+					'<select name="{{name}}" ng-hide="true" ' +
+						'ng-model="selectedValues" multiple ng-options="option as option[labelAttr] for option in selectedValues" ng-hide="true"></select>' +
 					'<label class="selector-input">' +
 						'<ul class="selector-values">' +
 							'<li ng-repeat="(index, option) in selectedValues track by index">' +

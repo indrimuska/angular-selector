@@ -1,10 +1,10 @@
 {
   "name": "angular-selector",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "authors": [
     "Indri Muska <indrimuska@gmail.com>"
   ],
-  "description": "A native AngularJS directive that transform a simple <select> box into a full html select with typeahead.",
+  "description": "A native AngularJS directive that transform a simple `<select>` box into a full html select with typeahead.",
   "main": [
     "./dist/angular-selector.js",
     "./dist/angular-selector.css"

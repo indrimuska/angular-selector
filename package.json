@@ -1,7 +1,7 @@
 {
   "name": "angular-selector",
-  "version": "0.5.1",
-  "description": "A native AngularJS directive that transform a simple <select> box into a full html select with typeahead.",
+  "version": "0.6.0",
+  "description": "A native AngularJS directive that transform a simple `<select>` box into a full html select with typeahead.",
   "main": "Gruntfile.js",
   "repository": {
     "type": "git",

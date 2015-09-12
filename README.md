@@ -1,10 +1,12 @@
-# Angular Selector [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/indrimuska/angular-selector?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+# Angular Selector
+
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/indrimuska/angular-selector?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 *Angular Selector* is a native AngularJS directive that transform a simple `<select>` box into a full html select with typeahead.
 
 Check out the examples page to learn more: [http://indrimuska.github.io/angular-selector](http://indrimuska.github.io/angular-selector).
 
-![Angular Selector](https://cloud.githubusercontent.com/assets/1561134/9519130/6617db5c-4cbc-11e5-8578-e123de99d23f.png)
+![Angular Selector](http://indrimuska.github.io/angular-selector/img/angular-selector.png)
 
 ### Features
 
@@ -51,6 +53,7 @@ Look at [these](http://indrimuska.github.io/angular-selector/).
 Parameter | Type | Default | Description
 ---|---|---|---
 model | `Property` | | Two-way binding property that models the `select` view.
+name | `String` | | Input name attribute.
 disable | `Boolean` | `false` | Enable/disable the select. Note the name is `disable` not `disabled` to avoid collisions with the HTML5 multiple attribute.
 multi | `Boolean` | `false` | Allows to select more than one value. Note the name is `multi` not `multiple` to avoid collisions with the HTML5 multiple attribute.
 placeholder | `String` | | Optional placeholder text to display if input is empty.
