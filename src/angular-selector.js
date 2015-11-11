@@ -6,10 +6,10 @@
 	var Selector = (function () {
 		
 		function getStyles(element) {
-			// Source from: https://github.com/jquery/jquery/blob/master/src/css/var/getStyles.js
-			var view = element.ownerDocument.defaultView;
-			if (!view.opener) view = window;
-			return view.getComputedStyle(element);
+			return !(element instanceof HTMLElement) ? {} :
+				element.ownerDocument && element.ownerDocument.defaultView.opener
+					? element.ownerDocument.defaultView.getComputedStyle(element)
+					: window.getComputedStyle(element);
 		}
 		
 		// Selector directive
@@ -325,11 +325,11 @@
 						styles = getStyles(input[0]),
 						shadow = angular.element('<span class="selector-shadow"></span>');
 					shadow.text(input.val() || (!scope.hasValue() ? scope.placeholder : '') || '');
-					input.parent().append(shadow);
+					angular.element(document.body).append(shadow);
 					angular.forEach(['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'letterSpacing', 'textTransform', 'wordSpacing', 'textIndent'], function (style) {
 						shadow.css(style, styles[style]);
 					});
-					width = shadow[0].offsetWidth;
+					width = shadow.width();
 					shadow.remove();
 					return width;
 				};

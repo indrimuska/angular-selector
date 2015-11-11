@@ -92,9 +92,8 @@
 
 /* Shadow */
 .selector-input input,
-.selector-input .selector-shadow { padding-left: 0 !important; padding-right: 0 !important;  border-left: 0 !important; border-right: 0 !important;
-	max-width: 100% !important; }
-.selector-input .selector-shadow { position: absolute; top: 0; left: 0; opacity: 0; visibility: hidden; white-space: pre; margin: 0;}
+.selector-shadow { padding-left: 0 !important; padding-right: 0 !important;  border-left: 0 !important; border-right: 0 !important; max-width: 100% !important; }
+.selector-shadow { position: absolute; top: 0; left: 0; opacity: 0; visibility: hidden; white-space: pre; margin: 0;}
 
 /* Dropdown */
 .selector-dropdown { display: none; list-style: none; padding: 0 !important; margin: 0 !important; position: absolute; z-index: 1;
