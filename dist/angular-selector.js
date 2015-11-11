@@ -329,7 +329,7 @@
 					angular.forEach(['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'letterSpacing', 'textTransform', 'wordSpacing', 'textIndent'], function (style) {
 						shadow.css(style, styles[style]);
 					});
-					width = shadow.width();
+					width = shadow[0].offsetWidth;
 					shadow.remove();
 					return width;
 				};
