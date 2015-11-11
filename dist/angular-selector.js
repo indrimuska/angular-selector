@@ -6,10 +6,10 @@
 	var Selector = (function () {
 		
 		function getStyles(element) {
-			return !(element instanceof HTMLElement) ? {} :
-				element.ownerDocument && element.ownerDocument.defaultView.opener
-					? element.ownerDocument.defaultView.getComputedStyle(element)
-					: window.getComputedStyle(element);
+			// Source from: https://github.com/jquery/jquery/blob/master/src/css/var/getStyles.js
+			var view = element.ownerDocument.defaultView;
+			if (!view.opener) view = window;
+			return view.getComputedStyle(element);
 		}
 		
 		// Selector directive
@@ -88,7 +88,7 @@
 					else scope.value = scope.valueAttr == null ? (value || []) : (value || []).map(function (option) { return option[scope.valueAttr]; });
 				};
 				scope.hasValue = function () {
-					return scope.multiple ? (scope.value || []).length > 0 : (scope.valueAttr == null ? !angular.equals({}, scope.value) : scope.value);
+					return scope.multiple ? (scope.value || []).length > 0 : (scope.valueAttr == null ? !angular.equals({}, scope.value) : !!scope.value);
 				};
 				
 				// Remote fetching
