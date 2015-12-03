@@ -1,5 +1,8 @@
 # Angular Selector
 
+[![NPM version](http://img.shields.io/npm/v/angular-selector.svg?style=flat)](https://npmjs.org/package/angular-selector)
+[![NPM downloads](http://img.shields.io/npm/dm/angular-selector.svg?style=flat)](https://npmjs.org/package/angular-selector)
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/indrimuska/angular-selector?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 *Angular Selector* is a native AngularJS directive that transform a simple `<select>` box into a full html select with typeahead.
@@ -31,12 +34,19 @@ Check out the examples page to learn more: [http://indrimuska.github.io/angular-
 
 ### Installation
 
+Get Angular Selector from [**npm**](https://www.npmjs.com/), [**bower**](http://bower.io/) or [**git**](https://git-scm.com/):
+```
+  npm install angular-selector
+bower install angular-selector
+  git clone   https://github.com/indrimuska/angular-selector.git
+```
+
 Load stylesheet and scripts into your app:
 
 ```html
-<link href="angular-selector/dist/angular-selector.css" rel="stylesheet">
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
-<script src="angular-selector/dist/angular-selector.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+<script src="//cdn.rawgit.com/indrimuska/angular-selector/master/dist/angular-selector.js"></script>
+<link href="//cdn.rawgit.com/indrimuska/angular-selector/master/dist/angular-selector.css" rel="stylesheet">
 ```
 
 Add the dependency to your module:
@@ -62,7 +72,7 @@ valueAttr | `String` | `null` | Name of the value key in options array. This als
 labelAttr | `String` | `"label"` | Name of the label key in options array.
 groupAttr | `String` | `"group"` | Name of the `optgroup` label key in options array. It allows to group items by the selected key. Items have to be already sorted to see the groups just one time.
 rtl | `Boolean` | `false` | Two-way bindable attribute to set a Right-To-Left text direction.
-api | `Object` | `{}` | This object is equipped with the methods for interacting with the selector.
+api | `Object` | `{}` | This object is equipped with the methods for interacting with the selector. Check out the ["APIs" example](http://indrimuska.github.io/angular-selector/).
 remote | `Object` | <pre>{<br>  method: 'GET',<br>  cache: true,<br>  params: {}<br>}</pre> | Configuration object to pass to the native `$http` service ([docs](https://docs.angularjs.org/api/ng/service/$http#usage)).
 remoteParam | `String` | `"q"` | Name of the query key in the remote parameter object. You should use this parameter to perform server-side filtering.
 removeButton | `Boolean` | `true` | Two-way bindable attribute to see the remove button (cross icon).
