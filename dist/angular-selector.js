@@ -29,6 +29,7 @@
 				options:               '=?',
 				rtl:                   '=?',
 				api:                   '=?',
+				change:                '&?',
 				remote:                '=?',
 				remoteParam:           '@?',
 				removeButton:          '=?',
@@ -359,6 +360,10 @@
 				scope.$watch('selectedValues', function (newValue, oldValue) {
 					if (angular.equals(newValue, oldValue)) return;
 					scope.updateValue();
+					if (angular.isFunction(scope.change))
+						scope.change(scope.multiple
+							? { newValue: newValue, oldValue: oldValue }
+							: { newValue: newValue[0], oldValue: oldValue[0] });
 				}, true);
 				scope.$watch('options', function (newValue, oldValue) {
 					if (angular.equals(newValue, oldValue) || scope.remote) return;
@@ -445,8 +450,6 @@
 				'<div class="selector" ng-attr-dir="{{rtl ? \'rtl\' : \'ltr\'}}" ' +
 					'ng-class="{open: isOpen, empty: !filteredOptions.length, multiple: multiple, \'has-value\': hasValue(), rtl: rtl, loading: loading, ' +
 						'\'remove-button\': removeButton, disabled: disabled}">' +
-					'<select name="{{name}}" ng-hide="true" ' +
-						'ng-model="selectedValues" multiple ng-options="option as option[labelAttr] for option in selectedValues" ng-hide="true"></select>' +
 					'<label class="selector-input">' +
 						'<ul class="selector-values">' +
 							'<li ng-repeat="(index, option) in selectedValues track by index">' +
