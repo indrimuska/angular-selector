@@ -22,6 +22,7 @@
 				value:                 '=model',
 				disabled:              '=?disable',
 				multiple:              '=?multi',
+                userInputted:          '=?user',
 				placeholder:           '@?',
 				valueAttr:             '@',
 				labelAttr:             '@?',
@@ -267,8 +268,12 @@
 							break;
 						case KEYS.enter:
 							if (scope.isOpen) {
-								if (scope.filteredOptions.length)
+								if (scope.filteredOptions.length) {
 									scope.set();
+                                } else if (scope.userInputted === true) {
+                                    scope.options.push({ label: e.target.value, value: e.target.value });
+                                    $timeout(scope.set);
+                                }
 								e.preventDefault();
 							}
 							break;
