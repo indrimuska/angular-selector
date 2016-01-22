@@ -73,6 +73,7 @@ labelAttr | `String` | `"label"` | Name of the label key in options array.
 groupAttr | `String` | `"group"` | Name of the `optgroup` label key in options array. It allows to group items by the selected key. Items have to be already sorted to see the groups just one time.
 rtl | `Boolean` | `false` | Two-way bindable attribute to set a Right-To-Left text direction.
 api | `Object` | `{}` | This object is equipped with the methods for interacting with the selector. Check out the ["APIs" example](http://indrimuska.github.io/angular-selector/).
+change | `Function` | | Callback fired every time the selected values change. It provides two parameters: `newValue` and `oldValue`.
 remote | `Object` | <pre>{<br>  method: 'GET',<br>  cache: true,<br>  params: {}<br>}</pre> | Configuration object to pass to the native `$http` service ([docs](https://docs.angularjs.org/api/ng/service/$http#usage)).
 remoteParam | `String` | `"q"` | Name of the query key in the remote parameter object. You should use this parameter to perform server-side filtering.
 removeButton | `Boolean` | `true` | Two-way bindable attribute to see the remove button (cross icon).
