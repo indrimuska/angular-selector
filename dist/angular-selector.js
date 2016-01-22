@@ -22,7 +22,7 @@
 				value:                 '=model',
 				disabled:              '=?disable',
 				multiple:              '=?multi',
-                userInputted:          '=?user',
+                createCustom:          '=?create',
 				placeholder:           '@?',
 				valueAttr:             '@',
 				labelAttr:             '@?',
@@ -270,8 +270,11 @@
 							if (scope.isOpen) {
 								if (scope.filteredOptions.length) {
 									scope.set();
-                                } else if (scope.userInputted === true) {
-                                    scope.options.push({ label: e.target.value, value: e.target.value });
+                                } else if (scope.createCustom === true) {
+                                    var obj = {};
+                                    obj[scope.labelAttr] = e.target.value;
+                                    obj[scope.valueAttr || 'value'] = e.target.value.toLowerCase();
+                                    scope.options.push(obj);
                                     $timeout(scope.set);
                                 }
 								e.preventDefault();
@@ -375,9 +378,10 @@
 					if (!scope.multiple) scope.selectedValues = (scope.options || []).filter(function (option) { return scope.optionEquals(option); }).slice(0, 1);
 					else
 						scope.selectedValues = (scope.value || []).map(function (value) {
-							return $filter('filter')(scope.options, function (option) {
+							var inList = $filter('filter')(scope.options, function (option) {
 								return scope.optionEquals(option, value);
 							})[0];
+                            return scope.createCustom ? value : inList;
 						}).filter(function (value) { return angular.isDefined(value); });
 				};
 				scope.$watch('value', function (newValue, oldValue) {

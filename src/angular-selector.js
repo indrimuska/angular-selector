@@ -273,7 +273,7 @@
                                 } else if (scope.createCustom === true) {
                                     var obj = {};
                                     obj[scope.labelAttr] = e.target.value;
-                                    obj[scope.valueAttr] = e.target.value.toLowerCase();
+                                    obj[scope.valueAttr || 'value'] = e.target.value.toLowerCase();
                                     scope.options.push(obj);
                                     $timeout(scope.set);
                                 }
