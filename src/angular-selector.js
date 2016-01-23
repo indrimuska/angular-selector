@@ -22,7 +22,7 @@
 				value:                 '=model',
 				disabled:              '=?disable',
 				multiple:              '=?multi',
-                createCustom:          '=?create',
+				createCustom:          '=?create',
 				placeholder:           '@?',
 				valueAttr:             '@',
 				labelAttr:             '@?',
@@ -271,13 +271,13 @@
 							if (scope.isOpen) {
 								if (scope.filteredOptions.length) {
 									scope.set();
-                                } else if (scope.createCustom === true) {
-                                    var obj = {};
-                                    obj[scope.labelAttr] = e.target.value;
-                                    obj[scope.valueAttr || 'value'] = e.target.value.toLowerCase();
-                                    scope.options.push(obj);
-                                    $timeout(scope.set);
-                                }
+								} else if (scope.createCustom === true) {
+									var obj = {};
+									obj[scope.labelAttr] = e.target.value;
+									obj[scope.valueAttr || 'value'] = e.target.value.toLowerCase();
+									scope.options.push(obj);
+									$timeout(scope.set);
+								}
 								e.preventDefault();
 							}
 							break;
@@ -386,7 +386,7 @@
 							var inList = $filter('filter')(scope.options, function (option) {
 								return scope.optionEquals(option, value);
 							})[0];
-                            return scope.createCustom ? value : inList;
+							return scope.createCustom ? value : inList;
 						}).filter(function (value) { return angular.isDefined(value); });
 				};
 				scope.$watch('value', function (newValue, oldValue) {
