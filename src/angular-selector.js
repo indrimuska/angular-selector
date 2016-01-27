@@ -472,7 +472,7 @@
 					'</ul>' +
 				'</div>'
 			);
-			$templateCache.put('selector/item-default.html', '<span ng-bind="option[labelAttr]"></span>');
+			$templateCache.put('selector/item-default.html', '<span ng-bind="option[labelAttr] || option"></span>');
 			$templateCache.put('selector/group-default.html', '<span ng-bind="option[groupAttr]"></span>');
 		}])
 		.directive('selector', ['$filter', '$timeout', '$window', '$http', '$q', function ($filter, $timeout, $window, $http, $q) {
