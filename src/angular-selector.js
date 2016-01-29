@@ -22,7 +22,7 @@
 				value:                 '=model',
 				disabled:              '=?disable',
 				multiple:              '=?multi',
-				create:                '@?',
+				create:                '&?',
 				placeholder:           '@?',
 				valueAttr:             '@',
 				labelAttr:             '@?',
@@ -278,10 +278,10 @@
 										option = scope.create({ input: e.target.value });
 									} else {
 										option[scope.labelAttr] = e.target.value;
-										option[scope.valueAttr || 'value'] = scope.slugify(e.target.value);
+										option[scope.valueAttr || 'value'] = e.target.value;
 									}
 									scope.options.push(option);
-									$timeout(scope.set);
+									scope.set(option);
 								}
 								e.preventDefault();
 							}
@@ -310,15 +310,6 @@
 							}
 							break;
 					}
-				};
-				
-				scope.slugify = function (text) {
-					return text.toString().toLowerCase()
-						.replace(/\s+/g, '-')           // Replace spaces with -
-						.replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-						.replace(/\-\-+/g, '-')         // Replace multiple - with single -
-						.replace(/^-+/, '')             // Trim - from start of text
-						.replace(/-+$/, '');            // Trim - from end of text
 				};
 				
 				// Filtered options
