@@ -1,7 +1,7 @@
 (function (angular) {
 	
 	// Key codes
-	var KEYS = { up: 38, down: 40, left: 37, right: 39, escape: 27, enter: 13, backspace: 8, delete: 46, shift: 16, leftCmd: 91, rightCmd: 93, ctrl: 17, alt: 18, tab: 9 };
+	var KEYS = { up: 38, down: 40, left: 37, right: 39, escape: 27, enter: 13, backspace: 8, delete: 46, shift: 16, leftCmd: 91, rightCmd: 93, ctrl: 17, alt: 18, tab: 9, comma: 188 };
 	
 	var Selector = (function () {
 		
@@ -22,7 +22,7 @@
 				value:                 '=model',
 				disabled:              '=?disable',
 				multiple:              '=?multi',
-				createCustom:          '=?create',
+				create:                '@?',
 				placeholder:           '@?',
 				valueAttr:             '@',
 				labelAttr:             '@?',
@@ -267,15 +267,20 @@
 							scope.highlight(0);
 							scope.close();
 							break;
+						case KEYS.comma:
 						case KEYS.enter:
 							if (scope.isOpen) {
 								if (scope.filteredOptions.length) {
 									scope.set();
-								} else if (scope.createCustom === true) {
-									var obj = {};
-									obj[scope.labelAttr] = e.target.value;
-									obj[scope.valueAttr || 'value'] = e.target.value.toLowerCase();
-									scope.options.push(obj);
+								} else if (attrs.create) {
+									var option = {};
+									if (angular.isFunction(scope.create)) {
+										option = scope.create({ input: e.target.value });
+									} else {
+										option[scope.labelAttr] = e.target.value;
+										option[scope.valueAttr || 'value'] = scope.slugify(e.target.value);
+									}
+									scope.options.push(option);
 									$timeout(scope.set);
 								}
 								e.preventDefault();
@@ -305,6 +310,15 @@
 							}
 							break;
 					}
+				};
+				
+				scope.slugify = function (text) {
+					return text.toString().toLowerCase()
+						.replace(/\s+/g, '-')           // Replace spaces with -
+						.replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+						.replace(/\-\-+/g, '-')         // Replace multiple - with single -
+						.replace(/^-+/, '')             // Trim - from start of text
+						.replace(/-+$/, '');            // Trim - from end of text
 				};
 				
 				// Filtered options
