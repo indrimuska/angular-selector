@@ -27,6 +27,7 @@
 				labelAttr:             '@?',
 				groupAttr:             '@?',
 				options:               '=?',
+				create:                '&?',
 				rtl:                   '=?',
 				api:                   '=?',
 				change:                '&?',
@@ -268,8 +269,20 @@
 							break;
 						case KEYS.enter:
 							if (scope.isOpen) {
-								if (scope.filteredOptions.length)
+								if (scope.filteredOptions.length) {
 									scope.set();
+								} else if (attrs.create) {
+									var option = {};
+									if (angular.isFunction(scope.create)) {
+										option = scope.create({ input: e.target.value });
+									} else {
+										option[scope.labelAttr] = e.target.value;
+										option[scope.valueAttr || 'value'] = e.target.value;
+									}
+									
+									scope.options.push(option);
+									scope.set(option);
+								}
 								e.preventDefault();
 							}
 							break;
@@ -448,8 +461,10 @@
 		.run(['$templateCache', function ($templateCache) {
 			$templateCache.put('selector/selector.html',
 				'<div class="selector" ng-attr-dir="{{rtl ? \'rtl\' : \'ltr\'}}" ' +
-					'ng-class="{open: isOpen, empty: !filteredOptions.length, multiple: multiple, \'has-value\': hasValue(), rtl: rtl, loading: loading, ' +
+					'ng-class="{open: isOpen, empty: !filteredOptions.length && (!create || !search), multiple: multiple, \'has-value\': hasValue(), rtl: rtl, loading: loading, ' +
 						'\'remove-button\': removeButton, disabled: disabled}">' +
+					'<select name="{{name}}" ng-hide="true" ' +
+						'ng-model="selectedValues" multiple ng-options="option as option[labelAttr] for option in selectedValues" ng-hide="true"></select>' +
 					'<label class="selector-input">' +
 						'<ul class="selector-values">' +
 							'<li ng-repeat="(index, option) in selectedValues track by index">' +
@@ -464,7 +479,10 @@
 							'<span class="selector-icon"></span>' +
 						'</div>' +
 					'</label>' +
-					'<ul class="selector-dropdown" ng-show="filteredOptions.length > 0">' +
+					'<ul class="selector-dropdown" ng-show="filteredOptions.length > 0 || (create && search)">' +
+						'<li class="selector-option active" ng-if="filteredOptions.length == 0">' +
+							'Add <i ng-bind="search"></i>' +
+						'</li>' +
 						'<li ng-repeat-start="(index, option) in filteredOptions track by index" class="selector-optgroup" ' +
 							'ng-include="dropdownGroupTemplate" ng-show="option[groupAttr] && index == 0 || filteredOptions[index-1][groupAttr] != option[groupAttr]"></li>' +
 						'<li ng-repeat-end ng-class="{active: highlighted == index, grouped: option[groupAttr]}" class="selector-option" ' +
