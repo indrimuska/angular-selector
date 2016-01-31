@@ -1,7 +1,7 @@
 (function (angular) {
 	
 	// Key codes
-	var KEYS = { up: 38, down: 40, left: 37, right: 39, escape: 27, enter: 13, backspace: 8, delete: 46, shift: 16, leftCmd: 91, rightCmd: 93, ctrl: 17, alt: 18, tab: 9, comma: 188 };
+	var KEYS = { up: 38, down: 40, left: 37, right: 39, escape: 27, enter: 13, backspace: 8, delete: 46, shift: 16, leftCmd: 91, rightCmd: 93, ctrl: 17, alt: 18, tab: 9 };
 	
 	var Selector = (function () {
 		
@@ -22,12 +22,12 @@
 				value:                 '=model',
 				disabled:              '=?disable',
 				multiple:              '=?multi',
-				create:                '&?',
 				placeholder:           '@?',
 				valueAttr:             '@',
 				labelAttr:             '@?',
 				groupAttr:             '@?',
 				options:               '=?',
+				create:                '=?',
 				rtl:                   '=?',
 				api:                   '=?',
 				change:                '&?',
@@ -267,7 +267,6 @@
 							scope.highlight(0);
 							scope.close();
 							break;
-						case KEYS.comma:
 						case KEYS.enter:
 							if (scope.isOpen) {
 								if (scope.filteredOptions.length) {
@@ -280,6 +279,7 @@
 										option[scope.labelAttr] = e.target.value;
 										option[scope.valueAttr || 'value'] = e.target.value;
 									}
+									
 									scope.options.push(option);
 									scope.set(option);
 								}
@@ -339,7 +339,7 @@
 						styles = getStyles(input[0]),
 						shadow = angular.element('<span class="selector-shadow"></span>');
 					shadow.text(input.val() || (!scope.hasValue() ? scope.placeholder : '') || '');
-					angular.element(document.body).append(shadow);
+					input.parent().append(shadow);
 					angular.forEach(['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'letterSpacing', 'textTransform', 'wordSpacing', 'textIndent'], function (style) {
 						shadow.css(style, styles[style]);
 					});
@@ -462,8 +462,10 @@
 		.run(['$templateCache', function ($templateCache) {
 			$templateCache.put('selector/selector.html',
 				'<div class="selector" ng-attr-dir="{{rtl ? \'rtl\' : \'ltr\'}}" ' +
-					'ng-class="{open: isOpen, empty: !filteredOptions.length, multiple: multiple, \'has-value\': hasValue(), rtl: rtl, loading: loading, ' +
+					'ng-class="{open: isOpen, empty: !filteredOptions.length && (!create || !search), multiple: multiple, \'has-value\': hasValue(), rtl: rtl, loading: loading, ' +
 						'\'remove-button\': removeButton, disabled: disabled}">' +
+					'<select name="{{name}}" ng-hide="true" ' +
+						'ng-model="selectedValues" multiple ng-options="option as option[labelAttr] for option in selectedValues" ng-hide="true"></select>' +
 					'<label class="selector-input">' +
 						'<ul class="selector-values">' +
 							'<li ng-repeat="(index, option) in selectedValues track by index">' +
@@ -478,7 +480,10 @@
 							'<span class="selector-icon"></span>' +
 						'</div>' +
 					'</label>' +
-					'<ul class="selector-dropdown" ng-show="filteredOptions.length > 0">' +
+					'<ul class="selector-dropdown">' +
+						'<li class="selector-option active" ng-if="create && filteredOptions.length == 0">' +
+							'Add <i ng-bind="search"></i>' +
+						'</li>' +
 						'<li ng-repeat-start="(index, option) in filteredOptions track by index" class="selector-optgroup" ' +
 							'ng-include="dropdownGroupTemplate" ng-show="option[groupAttr] && index == 0 || filteredOptions[index-1][groupAttr] != option[groupAttr]"></li>' +
 						'<li ng-repeat-end ng-class="{active: highlighted == index, grouped: option[groupAttr]}" class="selector-option" ' +
