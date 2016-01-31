@@ -279,7 +279,6 @@
 										option[scope.labelAttr] = e.target.value;
 										option[scope.valueAttr || 'value'] = e.target.value;
 									}
-									
 									scope.options.push(option);
 									scope.set(option);
 								}
@@ -461,8 +460,8 @@
 		.run(['$templateCache', function ($templateCache) {
 			$templateCache.put('selector/selector.html',
 				'<div class="selector" ng-attr-dir="{{rtl ? \'rtl\' : \'ltr\'}}" ' +
-					'ng-class="{open: isOpen, empty: !filteredOptions.length && (!create || !search), multiple: multiple, \'has-value\': hasValue(), rtl: rtl, loading: loading, ' +
-						'\'remove-button\': removeButton, disabled: disabled}">' +
+					'ng-class="{open: isOpen, empty: !filteredOptions.length && (!create || !search), multiple: multiple, \'has-value\': hasValue(), rtl: rtl, ' +
+						'loading: loading, \'remove-button\': removeButton, disabled: disabled}">' +
 					'<select name="{{name}}" ng-hide="true" ' +
 						'ng-model="selectedValues" multiple ng-options="option as option[labelAttr] for option in selectedValues" ng-hide="true"></select>' +
 					'<label class="selector-input">' +
