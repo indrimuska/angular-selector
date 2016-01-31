@@ -27,7 +27,7 @@
 				labelAttr:             '@?',
 				groupAttr:             '@?',
 				options:               '=?',
-				create:                '=?',
+				create:                '&?',
 				rtl:                   '=?',
 				api:                   '=?',
 				change:                '&?',
@@ -388,10 +388,9 @@
 					if (!scope.multiple) scope.selectedValues = (scope.options || []).filter(function (option) { return scope.optionEquals(option); }).slice(0, 1);
 					else
 						scope.selectedValues = (scope.value || []).map(function (value) {
-							var inList = $filter('filter')(scope.options, function (option) {
+							return $filter('filter')(scope.options, function (option) {
 								return scope.optionEquals(option, value);
 							})[0];
-							return scope.create ? value : inList;
 						}).filter(function (value) { return angular.isDefined(value); });
 				};
 				scope.$watch('value', function (newValue, oldValue) {
