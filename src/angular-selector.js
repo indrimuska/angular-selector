@@ -480,8 +480,8 @@
 							'<span class="selector-icon"></span>' +
 						'</div>' +
 					'</label>' +
-					'<ul class="selector-dropdown">' +
-						'<li class="selector-option active" ng-if="create && filteredOptions.length == 0">' +
+					'<ul class="selector-dropdown" ng-show="filteredOptions.length > 0 || (create && search)">' +
+						'<li class="selector-option active" ng-if="filteredOptions.length == 0">' +
 							'Add <i ng-bind="search"></i>' +
 						'</li>' +
 						'<li ng-repeat-start="(index, option) in filteredOptions track by index" class="selector-optgroup" ' +
