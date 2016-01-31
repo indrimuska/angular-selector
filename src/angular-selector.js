@@ -339,7 +339,7 @@
 						styles = getStyles(input[0]),
 						shadow = angular.element('<span class="selector-shadow"></span>');
 					shadow.text(input.val() || (!scope.hasValue() ? scope.placeholder : '') || '');
-					input.parent().append(shadow);
+					angular.element(document.body).append(shadow);
 					angular.forEach(['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'letterSpacing', 'textTransform', 'wordSpacing', 'textIndent'], function (style) {
 						shadow.css(style, styles[style]);
 					});
