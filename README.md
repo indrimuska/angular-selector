@@ -23,6 +23,8 @@ Check out the examples page to learn more: [http://indrimuska.github.io/angular-
   Fetch your data from an external source and use it in your application.
 * **From HTML `<option>` to JS `object`**<br>
   Fill your `<select>` from server-side ad use data-attributes for every option you have, then *Angular Selector* performs for you the conversion to a simple array of objects.
+* **Custom Option Creation**<br>
+  You can create new options and add them to the list, just by hitting <kbd>Enter</kbd>.
 * **Keyboard support**<br>
   Move up and down the dropdown list using keyboard arrows. Select highlighted item pressing <kbd>Enter</kbd>. Remove last selected item with <kbd>Del</kbd> key.
 * **Responsive**<br>
@@ -73,7 +75,7 @@ labelAttr | `String` | `"label"` | Name of the label key in options array.
 groupAttr | `String` | `"group"` | Name of the `optgroup` label key in options array. It allows to group items by the selected key. Items have to be already sorted to see the groups just one time.
 rtl | `Boolean` | `false` | Two-way bindable attribute to set a Right-To-Left text direction.
 api | `Object` | `{}` | This object is equipped with the methods for interacting with the selector. Check out the ["APIs" example](http://indrimuska.github.io/angular-selector/).
-create | `Boolean` or `Function` | | Allows user to type their own options and push them into the options array. You can pass a function that returns the full format of the tag data, using `input` as parameter, or set it to `true` to have an option object with `valueAttr` a `labelAttr` properties.
+create | `Boolean` or `Function` | | Allows users to type the label of their own options and push them into the list. You can pass a function that returns the full format of the option, using `input` as parameter, or set it to `true` to let Angular Selector create an object with the default properties given by `valueAttr` and `labelAttr`.
 change | `Function` | | Callback fired every time the selected values change. It provides two parameters: `newValue` and `oldValue`.
 remote | `Object` | <pre>{<br>  method: 'GET',<br>  cache: true,<br>  params: {}<br>}</pre> | Configuration object to pass to the native `$http` service ([docs](https://docs.angularjs.org/api/ng/service/$http#usage)).
 remoteParam | `String` | `"q"` | Name of the query key in the remote parameter object. You should use this parameter to perform server-side filtering.
