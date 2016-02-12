@@ -459,7 +459,7 @@
 		.module('selector', [])
 		.run(['$templateCache', function ($templateCache) {
 			$templateCache.put('selector/selector.html',
-				'<div class="selector-item" ng-attr-dir="{{rtl ? \'rtl\' : \'ltr\'}}" ' +
+				'<div class="selector-container" ng-attr-dir="{{rtl ? \'rtl\' : \'ltr\'}}" ' +
 					'ng-class="{open: isOpen, empty: !filteredOptions.length && (!create || !search), multiple: multiple, \'has-value\': hasValue(), rtl: rtl, ' +
 						'loading: loading, \'remove-button\': removeButton, disabled: disabled}">' +
 					'<select name="{{name}}" ng-hide="true" ' +
@@ -473,7 +473,7 @@
 								'</div>' +
 							'</li>' +
 						'</ul>' +
-						'<input class="selector-item" ng-model="search" placeholder="{{!hasValue() ? placeholder : \'\'}}" ng-disabled="disabled">' +
+						'<input ng-model="search" placeholder="{{!hasValue() ? placeholder : \'\'}}" ng-disabled="disabled">' +
 						'<div ng-if="!multiple || loading" class="selector-helper selector-global-helper" ng-click="!disabled && removeButton && unset()">' +
 							'<span class="selector-icon"></span>' +
 						'</div>' +
