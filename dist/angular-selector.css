@@ -7,6 +7,7 @@
 [selector],
 .selector { display: none; }
 .selector-container { display: block; position: relative; }
+.selector-container,
 .selector-container input { font-size: 1em; line-height: normal; color: #495c68; text-shadow: 0px 1px 0px rgba(255, 255, 255, .5); }
 .selector-input { display: block; margin: 0; position: relative; width: 100%; padding: .8em 2.6em .7em .7em; overflow: hidden; cursor: pointer; border: 1px solid #bbb;
 	-webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, .05), inset 0 1px 0 rgba(255, 255, 255, .8); box-shadow: 0 1px 0 rgba(0, 0, 0, .05), inset 0 1px 0 rgba(255, 255, 255, .8);

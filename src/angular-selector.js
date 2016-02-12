@@ -14,7 +14,7 @@
 		
 		// Selector directive
 		function Selector(filter, timeout, window, http, q) {
-			this.restrict   = 'EA';
+			this.restrict   = 'EAC';
 			this.replace    = true;
 			this.transclude = true;
 			this.scope      = {
