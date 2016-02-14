@@ -24,7 +24,6 @@
 		<link rel="stylesheet" href="demo.css">
 		<link rel="stylesheet" href="https://cdn.rawgit.com/indrimuska/angular-selector/master/dist/angular-selector.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/github.min.css">
-		<link rel="stylesheet" href="https://cdn.rawgit.com/Arnoud-B/csscountrycodes/master/flags.css">
 	</head>
 	<body ng-controller="AngularSelectorDemoCtrl" itemscope itemtype="http://schema.org/SoftwareApplication">
 		<div class="container">
@@ -137,6 +136,7 @@
 							<li ng-class="{active:tab=='view'}"><a ng-click="tab='view'">View</a></li>
 							<li ng-class="{active:tab=='html'}"><a ng-click="tab='html'">HTML</a></li>
 							<li ng-class="{active:tab=='js'}" ng-show="example.js"><a ng-click="tab='js'">JS</a></li>
+							<li plunker></li>
 						</ul>
 						<h4 ng-bind="example.title"></h4>
 					</div>
