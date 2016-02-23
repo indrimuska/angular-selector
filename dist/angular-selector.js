@@ -31,7 +31,7 @@
 				rtl:                   '=?',
 				api:                   '=?',
 				change:                '&?',
-				remote:                '=?',
+				remote:                '&?',
 				remoteParam:           '@?',
 				removeButton:          '=?',
 				viewItemTemplate:      '=?',
@@ -94,28 +94,33 @@
 				};
 				
 				// Remote fetching
-				scope.fetch = function () {
-					var settings = { method: 'GET', cache: true, params: {} };
-					if (!angular.isDefined(scope.remote) || !angular.isObject(scope.remote))
-						throw 'Remote attribute is not an object';
-					angular.extend(settings, scope.remote);
-					angular.extend(settings.params, scope.remote.params);
-					settings.params[scope.remoteParam] = scope.search || '';
+                scope.fetch = function () {
+					var promise, search = scope.search || '';
+					if (!angular.isDefined(scope.remote))
+						throw 'Remote attribute is not defined';
 					scope.loading = true;
 					scope.options = [];
-					$http(settings)
+					promise = scope.remote({ search: search });
+					if (typeof promise.then !== 'function') {
+						var settings = { method: 'GET', cache: true, params: {} };
+						angular.extend(settings, scope.remote());
+						angular.extend(settings.params, scope.remote().params);
+						settings.params[scope.remoteParam] = search;
+						promise = $http(settings);
+					}
+					promise
 						.then(function (data) {
-							scope.options = data.data;
+							scope.options = data.data || data;
 							scope.filterSelected();
 							scope.loading = false;
 							initDeferred.resolve();
-						}, function () {
+						}, function (error) {
 							scope.loading = false;
 							initDeferred.reject();
-							throw 'Error while fetching data';
+							throw 'Error while fetching data: ' + (error.message || error);
 						});
 				};
-				if (!angular.isDefined(scope.remote) || !angular.isObject(scope.remote)) {
+				if (!angular.isDefined(scope.remote)) {
 					scope.remote = false;
 					initDeferred.resolve();
 				}

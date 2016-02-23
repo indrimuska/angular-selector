@@ -77,8 +77,8 @@ rtl | `Boolean` | `false` | Two-way bindable attribute to set a Right-To-Left te
 api | `Object` | `{}` | This object is equipped with the methods for interacting with the selector. Check out the ["APIs" example](http://indrimuska.github.io/angular-selector/).
 create | `Boolean` or `Function` | | Allows users to type the label of their own options and push them into the list. You can pass a function that returns the full format of the option, using `input` as parameter, or set it to `true` to let Angular Selector create an object with the default properties given by `valueAttr` and `labelAttr`.
 change | `Function` | | Callback fired every time the selected values change. It provides two parameters: `newValue` and `oldValue`.
-remote | `Object` | <pre>{<br>  method: 'GET',<br>  cache: true,<br>  params: {}<br>}</pre> | Configuration object to pass to the native `$http` service ([docs](https://docs.angularjs.org/api/ng/service/$http#usage)).
-remoteParam | `String` | `"q"` | Name of the query key in the remote parameter object. You should use this parameter to perform server-side filtering.
+remote | `Object` or `Promise` | <pre>{<br>  method: 'GET',<br>  cache: true,<br>  params: {}<br>}</pre> | You can use remote data fetching with the native `$http` service or with your own custom service. In the first case this parameter must be the configuration object to pass to the native `$http` service ([docs](https://docs.angularjs.org/api/ng/service/$http#usage)). In the second case, `remote` is a function that returns a Promise object.
+remoteParam | `String` | `"q"` | If `remote` attribute is used with the native `$http` service, this parameter is the name of the query key in the remote parameter object. You should use this to perform server-side filtering.
 removeButton | `Boolean` | `true` | Two-way bindable attribute to see the remove button (cross icon).
 viewItemTemplate | `String` | `"selector/item-default.html"` | Template URL of selected item(s).
 dropdownItemTemplate | `String` | `"selector/item-default.html"` | Template URL of each item in the dropdown list.
