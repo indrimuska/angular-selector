@@ -133,15 +133,18 @@
 				<section ng-repeat="example in examples" ng-init="tab='view'">
 					<div class="navbar">
 						<ul class="nav nav-pills navbar-right">
-							<li ng-class="{active:tab=='view'}"><a ng-click="tab='view'">View</a></li>
-							<li ng-class="{active:tab=='html'}"><a ng-click="tab='html'">HTML</a></li>
-							<li ng-class="{active:tab=='js'}" ng-show="example.js"><a ng-click="tab='js'">JS</a></li>
+							<li ng-class="{active:tab=='view'}" ng-show="!example.service"><a ng-click="tab='view'">View</a></li>
+							<li ng-class="{active:tab=='html'}" ng-show="!example.service"><a ng-click="tab='html'">HTML</a></li>
+							<li ng-class="{active:tab=='js'}" ng-show="!example.service && example.js"><a ng-click="tab='js'">JS</a></li>
 							<li plunker></li>
 						</ul>
 						<h4 ng-bind="example.title"></h4>
 					</div>
 					
-					<div class="tab-content">
+					<div class="tab-content" ng-if="example.service">
+						<h4>Open this example on <span plunker></span></h4>
+					</div>
+					<div class="tab-content" ng-if="!example.service">
 						<div class="tab-pane example" ng-class="{active:tab=='view'}"></div>
 						<pre class="tab-pane" ng-class="{active:tab=='html'}" ng-bind-html="example.html|highlight:'html'"></pre>
 						<pre class="tab-pane" ng-class="{active:tab=='js'}" ng-bind-html="example.js|highlight:'javascript'" ng-if="example.js"></pre>

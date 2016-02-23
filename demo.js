@@ -17,6 +17,7 @@ angular
 		return {
 			restrict: 'C',
 			link: function ($scope, $element) {
+				if ($scope.example.service) return;
 				$element.html($scope.example.html);
 				$compile($element.contents())($scope);
 				eval($scope.example.js);
@@ -27,19 +28,20 @@ angular
 		return {
 			restrict: 'A',
 			template: (
-					'<form method="post" action="http://plnkr.co/edit/?p=preview" target="_blank">' +
+					'<form method="post" action="http://plnkr.co/edit/?p=preview" target="_blank" class="plunker">' +
 						'<button type="submit">' +
 							'<img src="https://plnkr.co/img/plunker.png" alt="Plunker">&nbsp; Plunker' +
 						'</button>' +
 					'</form>'
 			),
 			link: function ($scope, $element, $attrs) {
-				var example = $scope.example;
-					form    = angular.element($element[0].querySelector('form')),
-					desc    = angular.element('<input type="hidden" name="description">').val('Angular Selector example: ' + example.title),
-					html    = angular.element('<input type="hidden" name="files[index.html]">'),
-					css     = angular.element('<input type="hidden" name="files[style.css]">'),
-					js      = angular.element('<input type="hidden" name="files[script.js]">');
+				var example  = $scope.example;
+					form     = angular.element($element[0].querySelector('form')),
+					desc     = angular.element('<input type="hidden" name="description">').val('Angular Selector example: ' + example.title),
+					html     = angular.element('<input type="hidden" name="files[index.html]">'),
+					css      = angular.element('<input type="hidden" name="files[style.css]">'),
+					js       = angular.element('<input type="hidden" name="files[script.js]">'),
+					services = '';
 				
 				// plunker settings
 				form.append(angular.element('<input type="hidden" name="private" value="true">'));
@@ -82,13 +84,29 @@ angular
 				].join("\n"));
 				form.append(css);
 				
+				services = !example.service ? null : [
+					'	.service(\'' + example.service.name + '\', [' +
+							(example.service.deps || []).map(function (name) { return '\'' + name + '\''; }).join(', ') +
+							((example.service.deps || []).length > 0 ? ', ' : '') +
+						'function (' +
+							(example.service.deps || []).join(', ') +
+						') {',
+					'		' + (example.service.js || '').replace(/\n/g, "\n\t\t"),
+					'	}])'
+				].join("\n");
+				
 				js.val([
 					'angular',
 					'	.module(\'myApp\', [\'selector\'])',
-					'	.controller(\'ExampleCtrl\', [\'$scope\', function ($scope) {',
+					services,
+					'	.controller(\'ExampleCtrl\', [\'$scope\', ' +
+							(example.service ? '\'' + example.service.name + '\', ' : '') +
+						'function ($scope' +
+							(example.service ? ', ' + example.service.name : '') +
+						') {',
 					'		' + (example.js || '').replace(/\n/g, "\n\t\t"),
 					'	}]);'
-				].join("\n"));
+				].filter(function (l) { return l; }).join("\n"));
 				form.append(js);
 			}
 		};
