@@ -94,7 +94,7 @@
 				};
 				
 				// Remote fetching
-                scope.fetch = function () {
+				scope.fetch = function () {
 					var promise, search = scope.search || '';
 					if (!angular.isDefined(scope.remote))
 						throw 'Remote attribute is not defined';
@@ -191,8 +191,7 @@
 					var label       = input.parent()[0],
 						styles      = getStyles(label),
 						marginTop   = parseFloat(styles.marginTop || 0),
-						marginLeft  = parseFloat(styles.marginLeft || 0),
-						marginRight = parseFloat(styles.marginRight || 0);
+						marginLeft  = parseFloat(styles.marginLeft || 0);
 					
 					dropdown.css({
 						top:   (label.offsetTop + label.offsetHeight + marginTop) + 'px',
@@ -444,7 +443,7 @@
 					});
 				};
 				scope.api.unset = function (value) {
-					var values  = !value ? scope.selectedValues : (scope.selectedValues || []).filter(function (option) { return scope.optionEquals(option, value); });
+					var values  = !value ? scope.selectedValues : (scope.selectedValues || []).filter(function (option) { return scope.optionEquals(option, value); }),
 						indexes =
 							scope.selectedValues.map(function (option, index) {
 								return scope.inOptions(values, option) ? index : -1;

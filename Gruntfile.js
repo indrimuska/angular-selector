@@ -14,6 +14,12 @@ module.exports = function(grunt) {
 	        },
 	        file: 'package.json'
 		},
+		eslint: {
+			options: {
+				configFile: 'eslint.json'
+			},
+			target: ['src/angular-selector.js']
+		},
 		copy: {
 			main: {
 				files: {
@@ -56,7 +62,7 @@ module.exports = function(grunt) {
 	});
 	
 	// Default tasks.
-	grunt.registerTask('default', ['copy', 'uglify', 'cssmin', 'sync-json']);
+	grunt.registerTask('default', ['eslint', 'copy', 'uglify', 'cssmin', 'sync-json']);
 	grunt.registerTask('update-patch', ['bumpup:patch', 'default']);
 	
 };

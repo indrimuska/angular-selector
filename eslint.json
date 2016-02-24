@@ -1,0 +1,17 @@
+{
+	"env": {
+		"browser": true
+	},
+	"globals": {
+		"angular": 1
+	},
+	"extends": "eslint:recommended",
+	"rules": {
+		"indent": [2, "tab", {"SwitchCase": 1}],
+		"quotes": [2, "single"],
+		"eqeqeq": 0,
+		"strict": 0,
+		"no-undef": 0,
+		"semi": [2, "always"]
+	}
+}
