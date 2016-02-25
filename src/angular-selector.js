@@ -238,6 +238,17 @@
 							dd.scrollTop = option.offsetTop - marginTop;
 						});
 				};
+				scope.createOption = function (value) {
+					var option = {};
+					if (angular.isFunction(scope.create)) {
+						option = scope.create({ input: value });
+					} else {
+						option[scope.labelAttr] = value;
+						option[scope.valueAttr || 'value'] = value;
+					}
+					scope.options.push(option);
+					scope.set(option);
+				};
 				scope.set = function (option) {
 					if (!angular.isDefined(option))
 						option = scope.filteredOptions[scope.highlighted];
@@ -273,18 +284,10 @@
 							break;
 						case KEYS.enter:
 							if (scope.isOpen) {
-								if (scope.filteredOptions.length) {
-									scope.set();
-								} else if (attrs.create) {
-									var option = {};
-									if (angular.isFunction(scope.create)) {
-										option = scope.create({ input: e.target.value });
-									} else {
-										option[scope.labelAttr] = e.target.value;
-										option[scope.valueAttr || 'value'] = e.target.value;
-									}
-									scope.options.push(option);
-									scope.set(option);
+								if (scope.filteredOptions.length) scope.set();
+								else {
+									if (attrs.create)
+										scope.createOption(e.target.value);
 								}
 								e.preventDefault();
 							}
@@ -483,7 +486,7 @@
 						'</div>' +
 					'</label>' +
 					'<ul class="selector-dropdown" ng-show="filteredOptions.length > 0 || (create && search)">' +
-						'<li class="selector-option active" ng-if="filteredOptions.length == 0">' +
+						'<li class="selector-option active" ng-if="filteredOptions.length == 0" ng-mouseover="highlight(index)" ng-click="createOption(search)">' +
 							'Add <i ng-bind="search"></i>' +
 						'</li>' +
 						'<li ng-repeat-start="(index, option) in filteredOptions track by index" class="selector-optgroup" ' +
