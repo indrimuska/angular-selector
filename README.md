@@ -82,6 +82,7 @@ remoteParam | `String` | `"q"` | If `remote` attribute is used with the native `
 removeButton | `Boolean` | `true` | Two-way bindable attribute to see the remove button (cross icon).
 viewItemTemplate | `String` | `"selector/item-default.html"` | Template URL of selected item(s).
 dropdownItemTemplate | `String` | `"selector/item-default.html"` | Template URL of each item in the dropdown list.
+dropdownCreateTemplate | `String` | `"selector/item-create.html"` | Template URL of the dropdown element for the new items.
 dropdownGroupTemplate | `String` | `"selector/group-default.html"` | Template URL of each group (header) in the dropdown list.
 
 ### Contributions

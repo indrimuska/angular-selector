@@ -18,25 +18,26 @@
 			this.replace    = true;
 			this.transclude = true;
 			this.scope      = {
-				name:                  '@?',
-				value:                 '=model',
-				disabled:              '=?disable',
-				multiple:              '=?multi',
-				placeholder:           '@?',
-				valueAttr:             '@',
-				labelAttr:             '@?',
-				groupAttr:             '@?',
-				options:               '=?',
-				create:                '&?',
-				rtl:                   '=?',
-				api:                   '=?',
-				change:                '&?',
-				remote:                '&?',
-				remoteParam:           '@?',
-				removeButton:          '=?',
-				viewItemTemplate:      '=?',
-				dropdownItemTemplate:  '=?',
-				dropdownGroupTemplate: '=?'
+				name:                   '@?',
+				value:                  '=model',
+				disabled:               '=?disable',
+				multiple:               '=?multi',
+				placeholder:            '@?',
+				valueAttr:              '@',
+				labelAttr:              '@?',
+				groupAttr:              '@?',
+				options:                '=?',
+				create:                 '&?',
+				rtl:                    '=?',
+				api:                    '=?',
+				change:                 '&?',
+				remote:                 '&?',
+				remoteParam:            '@?',
+				removeButton:           '=?',
+				viewItemTemplate:       '=?',
+				dropdownItemTemplate:   '=?',
+				dropdownCreateTemplate: '=?',
+				dropdownGroupTemplate:  '=?'
 			};
 			this.templateUrl = 'selector/selector.html';
 			$filter  = filter;
@@ -52,18 +53,19 @@
 					dropdown     = angular.element(element[0].querySelector('.selector-dropdown')),
 					initDeferred = $q.defer(),
 					defaults     = {
-						api:                   {},
-						selectedValues:        [],
-						highlighted:           0,
-						valueAttr:             null,
-						labelAttr:             'label',
-						groupAttr:             'group',
-						options:               [],
-						remoteParam:           'q',
-						removeButton:          true,
-						viewItemTemplate:      'selector/item-default.html',
-						dropdownItemTemplate:  'selector/item-default.html',
-						dropdownGroupTemplate: 'selector/group-default.html'
+						api:                    {},
+						selectedValues:         [],
+						highlighted:            0,
+						valueAttr:              null,
+						labelAttr:              'label',
+						groupAttr:              'group',
+						options:                [],
+						remoteParam:            'q',
+						removeButton:           true,
+						viewItemTemplate:       'selector/item-default.html',
+						dropdownItemTemplate:   'selector/item-default.html',
+						dropdownCreateTemplate: 'selector/item-create.html',
+						dropdownGroupTemplate:  'selector/group-default.html'
 					};
 				
 				// Default attributes
@@ -486,9 +488,8 @@
 						'</div>' +
 					'</label>' +
 					'<ul class="selector-dropdown" ng-show="filteredOptions.length > 0 || (create && search)">' +
-						'<li class="selector-option active" ng-if="filteredOptions.length == 0" ng-mouseover="highlight(index)" ng-click="createOption(search)">' +
-							'Add <i ng-bind="search"></i>' +
-						'</li>' +
+						'<li class="selector-option active" ng-if="filteredOptions.length == 0" ' +
+							'ng-include="dropdownCreateTemplate" ng-mouseover="highlight(index)" ng-click="createOption(search)"></li>' +
 						'<li ng-repeat-start="(index, option) in filteredOptions track by index" class="selector-optgroup" ' +
 							'ng-include="dropdownGroupTemplate" ng-show="option[groupAttr] && index == 0 || filteredOptions[index-1][groupAttr] != option[groupAttr]"></li>' +
 						'<li ng-repeat-end ng-class="{active: highlighted == index, grouped: option[groupAttr]}" class="selector-option" ' +
@@ -496,6 +497,7 @@
 					'</ul>' +
 				'</div>'
 			);
+			$templateCache.put('selector/item-create.html', 'Add <i ng-bind="search"></i>');
 			$templateCache.put('selector/item-default.html', '<span ng-bind="option[labelAttr] || option"></span>');
 			$templateCache.put('selector/group-default.html', '<span ng-bind="option[groupAttr]"></span>');
 		}])
