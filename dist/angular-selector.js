@@ -98,6 +98,8 @@
 				// Remote fetching
 				scope.fetch = function () {
 					var promise, search = scope.search || '';
+					if (scope.disabled) return;
+					
 					if (!angular.isDefined(scope.remote))
 						throw 'Remote attribute is not defined';
 					scope.loading = true;
