@@ -1,17 +1,17 @@
 (function (angular) {
-	
+
 	// Key codes
 	var KEYS = { up: 38, down: 40, left: 37, right: 39, escape: 27, enter: 13, backspace: 8, delete: 46, shift: 16, leftCmd: 91, rightCmd: 93, ctrl: 17, alt: 18, tab: 9 };
-	
+
 	var Selector = (function () {
-		
+
 		function getStyles(element) {
 			return !(element instanceof HTMLElement) ? {} :
 				element.ownerDocument && element.ownerDocument.defaultView.opener
 					? element.ownerDocument.defaultView.getComputedStyle(element)
 					: window.getComputedStyle(element);
 		}
-		
+
 		// Selector directive
 		function Selector(filter, timeout, window, http, q) {
 			this.restrict   = 'EAC';
@@ -37,7 +37,8 @@
 				viewItemTemplate:       '=?',
 				dropdownItemTemplate:   '=?',
 				dropdownCreateTemplate: '=?',
-				dropdownGroupTemplate:  '=?'
+				dropdownGroupTemplate:  '=?',
+				softDelete:             '=?'
 			};
 			this.templateUrl = 'selector/selector.html';
 			$filter  = filter;
@@ -67,7 +68,7 @@
 						dropdownCreateTemplate: 'selector/item-create.html',
 						dropdownGroupTemplate:  'selector/group-default.html'
 					};
-				
+
 				// Default attributes
 				if (!angular.isDefined(scope.value))
 					scope.value = scope.multiple ? [] : '';
@@ -77,7 +78,7 @@
 				angular.forEach(['name', 'valueAttr', 'labelAttr'], function (attr) {
 					if (!attrs[attr]) attrs[attr] = scope[attr];
 				});
-				
+
 				// Options' utilities
 				scope.optionValue = function (option) {
 					return scope.valueAttr == null ? option : option[scope.valueAttr];
@@ -85,7 +86,7 @@
 				scope.optionEquals = function (option, value) {
 					return angular.equals(scope.optionValue(option), angular.isDefined(value) ? value : scope.value);
 				};
-				
+
 				// Value utilities
 				scope.setValue = function (value) {
 					if (!scope.multiple) scope.value = scope.valueAttr == null ? (value || {}) : (value || {})[scope.valueAttr];
@@ -94,12 +95,12 @@
 				scope.hasValue = function () {
 					return scope.multiple ? (scope.value || []).length > 0 : (scope.valueAttr == null ? !angular.equals({}, scope.value) : !!scope.value);
 				};
-				
+
 				// Remote fetching
 				scope.fetch = function () {
 					var promise, search = scope.search || '';
 					if (scope.disabled) return;
-					
+
 					if (!angular.isDefined(scope.remote))
 						throw 'Remote attribute is not defined';
 					scope.loading = true;
@@ -130,12 +131,12 @@
 				}
 				if (scope.remote)
 					scope.$watch('search', scope.fetch);
-				
+
 				// Fill with options in the select
 				scope.optionToObject = function (option, group) {
 					var object  = {},
 						element = angular.element(option);
-					
+
 					angular.forEach(option.dataset, function (value, key) {
 						if (!key.match(/^\$/)) object[key] = value;
 					});
@@ -146,7 +147,7 @@
 					if (angular.isDefined(group))
 						object[scope.groupAttr] = group;
 					scope.options.push(object);
-					
+
 					if (element.attr('selected') && (scope.multiple || !scope.hasValue()))
 						if (!scope.multiple) {
 							if (!scope.value) scope.value = scope.optionValue(object);
@@ -159,7 +160,7 @@
 					scope.options = [];
 					angular.forEach(clone, function (element) {
 						var tagName = (element.tagName || '').toLowerCase();
-						
+
 						if (tagName == 'option') scope.optionToObject(element);
 						if (tagName == 'optgroup') {
 							angular.forEach(element.querySelectorAll('option'), function (option) {
@@ -169,7 +170,7 @@
 					});
 					scope.updateSelected();
 				};
-				
+
 				// Initialization
 				scope.initialize = function () {
 					if (!scope.remote && (!angular.isArray(scope.options) || !scope.options.length))
@@ -189,14 +190,14 @@
 					$timeout(scope.setInputWidth);
 					initDeferred.promise.then(scope.initialize, scope.initialize);
 				});
-				
+
 				// Dropdown utilities
 				scope.dropdownPosition = function () {
 					var label       = input.parent()[0],
 						styles      = getStyles(label),
 						marginTop   = parseFloat(styles.marginTop || 0),
 						marginLeft  = parseFloat(styles.marginLeft || 0);
-					
+
 					dropdown.css({
 						top:   (label.offsetTop + label.offsetHeight + marginTop) + 'px',
 						left:  (label.offsetLeft + marginLeft) + 'px',
@@ -229,14 +230,14 @@
 						styles       = getStyles(option),
 						marginTop    = parseFloat(styles.marginTop || 0),
 						marginBottom = parseFloat(styles.marginBottom || 0);
-					
+
 					if (!scope.filteredOptions.length) return;
-					
+
 					if (option.offsetTop + option.offsetHeight + marginBottom > dd.scrollTop + dd.offsetHeight)
 						$timeout(function () {
 							dd.scrollTop = option.offsetTop + option.offsetHeight + marginBottom - dd.offsetHeight;
 						});
-					
+
 					if (option.offsetTop - marginTop < dd.scrollTop)
 						$timeout(function () {
 							dd.scrollTop = option.offsetTop - marginTop;
@@ -256,7 +257,7 @@
 				scope.set = function (option) {
 					if (!angular.isDefined(option))
 						option = scope.filteredOptions[scope.highlighted];
-					
+
 					if (!scope.multiple) scope.selectedValues = [option];
 					else {
 						if (scope.selectedValues.indexOf(option) < 0)
@@ -266,9 +267,12 @@
 					scope.resetInput();
 				};
 				scope.unset = function (index) {
-					if (!scope.multiple) scope.selectedValues = [];
-					else scope.selectedValues.splice(angular.isDefined(index) ? index : scope.selectedValues.length - 1, 1);
-					scope.resetInput();
+					var removed = scope.selectedValues.splice(angular.isDefined(index) ? index : scope.selectedValues.length - 1, 1);
+ 					if (removed.length && event.keyCode === KEYS.backspace && scope.softDelete) {
+						scope.resetInput(removed[0][scope.labelAttr]);
+					} else {
+						scope.resetInput();
+					}
 				};
 				scope.keydown = function (e) {
 					switch (e.keyCode) {
@@ -321,7 +325,7 @@
 							break;
 					}
 				};
-				
+
 				// Filtered options
 				scope.inOptions = function (options, value) {
 					// if options are fetched from a remote source, it's not possibile to use
@@ -342,7 +346,7 @@
 					if (scope.highlighted >= scope.filteredOptions.length)
 						scope.highlight(scope.filteredOptions.length - 1);
 				};
-				
+
 				// Input width utilities
 				scope.measureWidth = function () {
 					var width,
@@ -361,12 +365,12 @@
 					var width = scope.measureWidth() + 1;
 					input.css('width', width + 'px');
 				};
-				scope.resetInput = function () {
-					input.val('');
-					scope.search = '';
+				scope.resetInput = function (value) {
+					input.val(value || '');
+					scope.search = value || '';
 					scope.setInputWidth();
 				};
-				
+
 				scope.$watch('[search, options, value]', function () {
 					scope.setInputWidth();
 					// Remove selected items
@@ -374,7 +378,7 @@
 					// Repositionate dropdown
 					if (scope.isOpen) $timeout(scope.dropdownPosition);
 				}, true);
-				
+
 				// Update value
 				scope.updateValue = function (origin) {
 					if (!angular.isDefined(origin)) origin = scope.selectedValues;
@@ -392,7 +396,7 @@
 					if (angular.equals(newValue, oldValue) || scope.remote) return;
 					scope.updateSelected();
 				});
-				
+
 				// Update selected values
 				scope.updateSelected = function () {
 					if (!scope.multiple) scope.selectedValues = (scope.options || []).filter(function (option) { return scope.optionEquals(option); }).slice(0, 1);
@@ -407,7 +411,7 @@
 					if (angular.equals(newValue, oldValue) || scope.remote) return;
 					scope.updateSelected();
 				}, true);
-				
+
 				// DOM event listeners
 				input
 					.on('focus', function () {
@@ -434,7 +438,7 @@
 					.on('resize', function () {
 						scope.dropdownPosition();
 					});
-				
+
 				// Expose APIs
 				angular.forEach(['open', 'close', 'fetch'], function (api) {
 					scope.api[api] = scope[api];
@@ -444,7 +448,7 @@
 				};
 				scope.api.set = function (value) {
 					var search = (scope.filteredOptions || []).filter(function (option) { return scope.optionEquals(option, value); });
-					
+
 					angular.forEach(search, function (option) {
 						scope.set(option);
 					});
@@ -455,17 +459,17 @@
 							scope.selectedValues.map(function (option, index) {
 								return scope.inOptions(values, option) ? index : -1;
 							}).filter(function (index) { return index >= 0; });
-					
+
 					angular.forEach(indexes, function (index, i) {
 						scope.unset(index - i);
 					});
 				};
 			});
 		};
-		
+
 		return Selector;
 	})();
-	
+
 	angular
 		.module('selector', [])
 		.run(['$templateCache', function ($templateCache) {
@@ -506,5 +510,5 @@
 		.directive('selector', ['$filter', '$timeout', '$window', '$http', '$q', function ($filter, $timeout, $window, $http, $q) {
 			return new Selector($filter, $timeout, $window, $http, $q);
 		}]);
-	
+
 })(window.angular);
