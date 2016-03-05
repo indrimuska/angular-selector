@@ -410,25 +410,23 @@
 				}, true);
 				
 				// DOM event listeners
-				$timeout(function () {
-					input = angular.element(element[0].querySelector('.selector-input input'))
-						.on('focus', function () {
-							$timeout(function () {
-								scope.$apply(scope.open);
-							});
-						})
-						.on('blur', function () {
-							scope.$apply(scope.close);
-						})
-						.on('keydown', function (e) {
-							scope.$apply(function () {
-								scope.keydown(e);
-							});
-						})
-						.on('input', function () {
-							scope.setInputWidth();
+				input = angular.element(element[0].querySelector('.selector-input input'))
+					.on('focus', function () {
+						$timeout(function () {
+							scope.$apply(scope.open);
 						});
-				});
+					})
+					.on('blur', function () {
+						scope.$apply(scope.close);
+					})
+					.on('keydown', function (e) {
+						scope.$apply(function () {
+							scope.keydown(e);
+						});
+					})
+					.on('input', function () {
+						scope.setInputWidth();
+					});
 				dropdown
 					.on('mousedown', function (e) {
 						e.preventDefault();
@@ -487,8 +485,7 @@
 								'</div>' +
 							'</li>' +
 						'</ul>' +
-						'<input ng-model="search" placeholder="{{!hasValue() ? placeholder : \'\'}}" ng-disabled="disabled" ng-if="!required">' +
-						'<input ng-model="search" placeholder="{{!hasValue() ? placeholder : \'\'}}" ng-disabled="disabled" ng-if="required" ng-required="!hasValue()">' +
+						'<input ng-model="search" placeholder="{{!hasValue() ? placeholder : \'\'}}" ng-disabled="disabled" ng-required="required && !hasValue()">' +
 						'<div ng-if="!multiple || loading" class="selector-helper selector-global-helper" ng-click="!disabled && removeButton && unset()">' +
 							'<span class="selector-icon"></span>' +
 						'</div>' +
