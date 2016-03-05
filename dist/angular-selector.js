@@ -369,11 +369,14 @@
 				};
 				
 				scope.$watch('[search, options, value]', function () {
-					scope.setInputWidth();
 					// Remove selected items
 					scope.filterSelected();
-					// Repositionate dropdown
-					if (scope.isOpen) $timeout(scope.dropdownPosition);
+					$timeout(function () {
+						// set width
+						scope.setInputWidth();
+						// Repositionate dropdown
+						if (scope.isOpen) scope.dropdownPosition();
+					});
 				}, true);
 				
 				// Update value
