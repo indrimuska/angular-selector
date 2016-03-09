@@ -416,6 +416,7 @@
 				scope.$watch('value', function (newValue, oldValue) {
 					if (angular.equals(newValue, oldValue) || scope.remote) return;
 					scope.updateSelected();
+					scope.filterSelected();
 				}, true);
 				
 				// DOM event listeners
