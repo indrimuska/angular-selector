@@ -35,6 +35,7 @@
 				remote:                 '&?',
 				remoteParam:            '@?',
 				removeButton:           '=?',
+				softDelete:             '=?',
 				viewItemTemplate:       '=?',
 				dropdownItemTemplate:   '=?',
 				dropdownCreateTemplate: '=?',
@@ -299,8 +300,13 @@
 							break;
 						case KEYS.backspace:
 							if (!input.val()) {
+								var search = (scope.selectedValues.slice(-1)[0] || {})[scope.labelAttr] || '';
 								scope.unset();
 								scope.open();
+								if (scope.softDelete) {
+									scope.search = search;
+									if (scope.multiple) e.preventDefault();
+								}
 							}
 							break;
 						case KEYS.left:

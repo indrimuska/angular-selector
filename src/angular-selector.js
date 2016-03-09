@@ -305,7 +305,7 @@
 								scope.open();
 								if (scope.softDelete) {
 									scope.search = search;
-									e.preventDefault();
+									if (scope.multiple) e.preventDefault();
 								}
 							}
 							break;
