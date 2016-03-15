@@ -398,7 +398,7 @@
 							? { newValue: newValue, oldValue: oldValue }
 							: { newValue: newValue[0], oldValue: oldValue[0] });
 				}, true);
-				scope.$watch('options', function (newValue, oldValue) {
+				scope.$watchCollection('options', function (newValue, oldValue) {
 					if (angular.equals(newValue, oldValue) || scope.remote) return;
 					scope.updateSelected();
 				});
