@@ -56,6 +56,7 @@
 					initDeferred = $q.defer(),
 					defaults     = {
 						api:                    {},
+						search:                 '',
 						selectedValues:         [],
 						highlighted:            0,
 						valueAttr:              null,
@@ -399,7 +400,7 @@
 							: { newValue: newValue[0], oldValue: oldValue[0] });
 				}, true);
 				scope.$watchCollection('options', function (newValue, oldValue) {
-					if (angular.equals(newValue, oldValue) || scope.remote) return;
+					if (angular.equals(newValue, oldValue)) return;
 					scope.updateSelected();
 				});
 				
@@ -414,9 +415,10 @@
 						}).filter(function (value) { return angular.isDefined(value); });
 				};
 				scope.$watch('value', function (newValue, oldValue) {
-					if (angular.equals(newValue, oldValue) || scope.remote) return;
+					if (angular.equals(newValue, oldValue)) return;
 					scope.updateSelected();
 					scope.filterSelected();
+					scope.updateValue();
 				}, true);
 				
 				// DOM event listeners
