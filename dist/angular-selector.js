@@ -223,8 +223,11 @@
 					scope.scrollToHighlighted();
 				};
 				scope.highlight = function (index) {
-					if (scope.filteredOptions.length)
-						scope.highlighted = (scope.filteredOptions.length + index) % scope.filteredOptions.length;
+					if (attrs.create && scope.search && index == -1)
+						scope.highlighted = -1;
+					else
+						if (scope.filteredOptions.length)
+							scope.highlighted = (scope.filteredOptions.length + index) % scope.filteredOptions.length;
 				};
 				scope.scrollToHighlighted = function () {
 					var dd           = dropdown[0],
@@ -291,11 +294,11 @@
 							break;
 						case KEYS.enter:
 							if (scope.isOpen) {
-								if (scope.filteredOptions.length) scope.set();
-								else {
-									if (attrs.create)
-										scope.createOption(e.target.value);
-								}
+								if (attrs.create && scope.search && scope.highlighted == -1)
+									scope.createOption(e.target.value);
+								else
+									if (scope.filteredOptions.length)
+										scope.set();
 								e.preventDefault();
 							}
 							break;
@@ -503,8 +506,8 @@
 						'</div>' +
 					'</label>' +
 					'<ul class="selector-dropdown" ng-show="filteredOptions.length > 0 || (create && search)">' +
-						'<li class="selector-option active" ng-if="filteredOptions.length == 0" ' +
-							'ng-include="dropdownCreateTemplate" ng-mouseover="highlight(index)" ng-click="createOption(search)"></li>' +
+						'<li class="selector-option create" ng-class="{active: highlighted == -1}" ng-if="create && search" ' +
+							'ng-include="dropdownCreateTemplate" ng-mouseover="highlight(-1)" ng-click="createOption(search)"></li>' +
 						'<li ng-repeat-start="(index, option) in filteredOptions track by index" class="selector-optgroup" ' +
 							'ng-include="dropdownGroupTemplate" ng-show="option[groupAttr] && index == 0 || filteredOptions[index-1][groupAttr] != option[groupAttr]"></li>' +
 						'<li ng-repeat-end ng-class="{active: highlighted == index, grouped: option[groupAttr]}" class="selector-option" ' +

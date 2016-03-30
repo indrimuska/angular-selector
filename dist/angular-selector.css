@@ -107,4 +107,6 @@
 .selector-dropdown>.selector-optgroup { background: #fefefe; border-top: 1px solid #f0f0f0; border-bottom: 1px solid #f0f0f0; }
 .selector-dropdown>.selector-option.grouped { padding-left: 1.6em; }
 .selector-dropdown>.selector-option.active { background: #f5fafd; }
+.selector-dropdown>.selector-option.create { color: rgba(73, 92, 104, .6); }
+.selector-dropdown>.selector-option.create.active { color: #495c68; }
 .selector-container.open .selector-dropdown { display: block; }
