@@ -118,7 +118,7 @@
 					promise
 						.then(function (data) {
 							scope.options = data.data || data;
-							scope.filterSelected();
+							scope.filterOptions();
 							scope.loading = false;
 							initDeferred.resolve();
 						}, function (error) {
@@ -184,7 +184,7 @@
 							if (!angular.isArray(scope.value)) scope.value = [scope.value];
 						}
 						scope.updateSelected();
-						scope.filterSelected();
+						scope.filterOptions();
 						scope.updateValue();
 					}
 				};
@@ -343,7 +343,7 @@
 					else
 						return options.indexOf(value) >= 0;
 				};
-				scope.filterSelected = function () {
+				scope.filterOptions = function () {
 					scope.filteredOptions = $filter('filter')(scope.options || [], scope.search);
 					if (scope.multiple)
 						scope.filteredOptions = scope.filteredOptions.filter(function (option) {
@@ -380,7 +380,7 @@
 				
 				scope.$watch('[search, options, value]', function () {
 					// Remove selected items
-					scope.filterSelected();
+					scope.filterOptions();
 					$timeout(function () {
 						// set width
 						scope.setInputWidth();
@@ -403,7 +403,7 @@
 							: { newValue: newValue[0], oldValue: oldValue[0] });
 				}, true);
 				scope.$watchCollection('options', function (newValue, oldValue) {
-					if (angular.equals(newValue, oldValue)) return;
+					if (angular.equals(newValue, oldValue) || scope.remote) return;
 					scope.updateSelected();
 				});
 				
@@ -419,8 +419,8 @@
 				};
 				scope.$watch('value', function (newValue, oldValue) {
 					if (angular.equals(newValue, oldValue)) return;
-					scope.updateSelected();
-					scope.filterSelected();
+					if (!scope.remote || scope.options.length > 0) scope.updateSelected();
+					scope.filterOptions();
 					scope.updateValue();
 				}, true);
 				
