@@ -352,6 +352,8 @@
 						});
 					if (scope.highlighted >= scope.filteredOptions.length)
 						scope.highlight(scope.filteredOptions.length - 1);
+					if (scope.highlighted == -1 && scope.filteredOptions.length > 0)
+						scope.highlight(0);
 				};
 				
 				// Input width utilities
