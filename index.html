@@ -138,7 +138,7 @@
 							<li ng-class="{active:tab=='js'}" ng-show="!example.service && example.js"><a ng-click="tab='js'">JS</a></li>
 							<li plunker></li>
 						</ul>
-						<h4 ng-bind="example.title|trustAsHtml"></h4>
+						<h4 ng-bind-html="example.title|trustAsHtml"></h4>
 					</div>
 					
 					<div class="tab-content" ng-if="example.service">
