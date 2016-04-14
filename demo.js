@@ -8,6 +8,11 @@ angular
 				$scope.examples = data.data;
 			});
 	}])
+	.filter('trustAsHtml', ['$sce', function ($sce) {
+		return function (input) {
+			return $sce.trustAsHtml(input);
+		};
+	}])
 	.filter('highlight', ['$sce', function ($sce) {
 		return function (input, lang) {
 			return $sce.trustAsHtml(lang && input ? hljs.highlight(lang, input).value : input);

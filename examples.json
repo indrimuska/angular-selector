@@ -56,5 +56,15 @@ angular.callbacks._0([
 		"title": "Create custom options",
 		"html": "<select selector\n\tmodel=\"myHobbies\"\n\tmulti=\"true\"\n\toptions=\"hobbies\"\n\tvalue-attr=\"value\"\n\tplaceholder=\"Which are your hobbies? (type something that is not in the list)\"\n\tcreate=\"createFunction(input)\"></select>\n\n<p>\n\tCurrent value: <code ng-bind=\"myHobbies|json\"></code>\n</p>",
 		"js": "$scope.hobbies =[\n\t{ value: 0, label: \"Basketball\" },\n\t{ value: 1, label: \"Videogames\" },\n\t{ value: 2, label: \"Travelling\" }\n];\n\n$scope.createFunction = function (input) {\n\t// format the option and return it\n\treturn {\n\t\tvalue: $scope.hobbies.length,\n\t\tlabel: input\n\t};\n};"
+	},
+	{
+		"title": "Create custom options (using <code>Promise</code>)",
+		"html": "<select selector\n\tmodel=\"myHobbies\"\n\tmulti=\"true\"\n\toptions=\"hobbies\"\n\tvalue-attr=\"value\"\n\tplaceholder=\"Which are your hobbies? (type something that is not in the list)\"\n\tcreate=\"createFunction(input)\"></select>\n\n<p>\n\tCurrent value: <code ng-bind=\"myHobbies|json\"></code>\n</p>",
+		"js": "$scope.hobbies = [\n\t{ value: 0, label: \"Basketball\" },\n\t{ value: 1, label: \"Videogames\" },\n\t{ value: 2, label: \"Travelling\" }\n];\n\n$scope.createFunction = function (input) {\n\treturn $hobbies.insert(input);\n};",
+		"service": {
+			"name": "$hobbies",
+			"deps": ["$q"],
+			"js": "function Hobbies() {\n\tthis.lastId = 3;\n}\nHobbies.prototype.insert = function (input) {\n\treturn $q.resolve({\n\t\tvalue: this.lastId++,\n\t\tlabel: input\n\t});\n};\n\nreturn new Hobbies();"
+		}
 	}
 ])
