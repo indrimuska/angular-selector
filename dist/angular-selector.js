@@ -249,15 +249,19 @@
 						});
 				};
 				scope.createOption = function (value) {
-					var option = {};
-					if (angular.isFunction(scope.create)) {
-						option = scope.create({ input: value });
-					} else {
-						option[scope.labelAttr] = value;
-						option[scope.valueAttr || 'value'] = value;
-					}
-					scope.options.push(option);
-					scope.set(option);
+					$q.when((function () {
+						var option = {};
+						if (angular.isFunction(scope.create)) {
+							option = scope.create({ input: value });
+						} else {
+							option[scope.labelAttr] = value;
+							option[scope.valueAttr || 'value'] = value;
+						}
+						return option;
+					})()).then(function (option) {
+						scope.options.push(option);
+						scope.set(option);
+					});
 				};
 				scope.set = function (option) {
 					if (!angular.isDefined(option))
