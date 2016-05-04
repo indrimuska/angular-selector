@@ -82,6 +82,7 @@ remote | `Object` or `Promise` | <pre>{<br>  method: 'GET',<br>  cache: true,<br
 remoteParam | `String` | `"q"` | If `remote` attribute is used with the native `$http` service, this parameter is the name of the query key in the remote parameter object. You should use this to perform server-side filtering.
 removeButton | `Boolean` | `true` | Two-way bindable attribute to show the remove button (cross icon).
 softDelete | `Boolean` | `false` | Restores the last selected input text (using `labelAttr` attribute) after pressing <kbd>Backspace</kbd>.
+closeAfterSelection | `Boolean` | | Close dropdown after selecting an item.
 viewItemTemplate | `String` | `"selector/item-default.html"` | Template URL for the selected item(s).
 dropdownItemTemplate | `String` | `"selector/item-default.html"` | Template URL for each item in the dropdown list.
 dropdownCreateTemplate | `String` | `"selector/item-create.html"` | Template URL for the dropdown element for the new items.
