@@ -38,6 +38,7 @@
 				remoteParam:            '@?',
 				removeButton:           '=?',
 				softDelete:             '=?',
+				closeAfterSelection:    '=?',
 				viewItemTemplate:       '=?',
 				dropdownItemTemplate:   '=?',
 				dropdownCreateTemplate: '=?',
@@ -274,7 +275,7 @@
 						if (scope.selectedValues.indexOf(option) < 0)
 							scope.selectedValues.push(option);
 					}
-					if (!scope.multiple) scope.close();
+					if (!scope.multiple || scope.closeAfterSelection) scope.close();
 					scope.resetInput();
 				};
 				scope.unset = function (index) {
