@@ -30,6 +30,7 @@
 				labelAttr:              '@?',
 				groupAttr:              '@?',
 				options:                '=?',
+				debounce:               '=?',
 				create:                 '&?',
 				rtl:                    '=?',
 				api:                    '=?',
@@ -66,6 +67,7 @@
 						labelAttr:              'label',
 						groupAttr:              'group',
 						options:                [],
+						debounce:               0,
 						remoteParam:            'q',
 						removeButton:           true,
 						viewItemTemplate:       'selector/item-default.html',
@@ -509,7 +511,8 @@
 								'</div>' +
 							'</li>' +
 						'</ul>' +
-						'<input ng-model="search" placeholder="{{!hasValue() ? placeholder : \'\'}}" ng-disabled="disabled" ng-required="required && !hasValue()">' +
+						'<input ng-model="search" placeholder="{{!hasValue() ? placeholder : \'\'}}" ng-model-options="{ debounce: debounce }"' +
+							'ng-disabled="disabled" ng-required="required && !hasValue()">' +
 						'<div ng-if="!multiple || loading" class="selector-helper selector-global-helper" ng-click="!disabled && removeButton && unset()">' +
 							'<span class="selector-icon"></span>' +
 						'</div>' +
