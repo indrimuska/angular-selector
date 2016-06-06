@@ -155,7 +155,7 @@
 						? angular.noop
 						: scope.fetchValidation(scope.value)
 					).then(function () {
-						scope.$watch('search', function (newValue, oldValue) {
+						scope.$watch('search', function () {
 							$timeout(scope.fetch);
 						});
 					});

@@ -30,12 +30,15 @@
 				labelAttr:              '@?',
 				groupAttr:              '@?',
 				options:                '=?',
+				debounce:               '=?',
 				create:                 '&?',
 				rtl:                    '=?',
 				api:                    '=?',
 				change:                 '&?',
 				remote:                 '&?',
 				remoteParam:            '@?',
+				remoteValidation:       '&?',
+				remoteValidationParam:  '@?',
 				removeButton:           '=?',
 				softDelete:             '=?',
 				closeAfterSelection:    '=?',
@@ -66,7 +69,9 @@
 						labelAttr:              'label',
 						groupAttr:              'group',
 						options:                [],
+						debounce:               0,
 						remoteParam:            'q',
+						remoteValidationParam:  'value',
 						removeButton:           true,
 						viewItemTemplate:       'selector/item-default.html',
 						dropdownItemTemplate:   'selector/item-default.html',
@@ -102,20 +107,21 @@
 				};
 				
 				// Remote fetching
-				scope.fetch = function () {
-					var promise, search = scope.search || '';
-					if (scope.disabled) return;
-					
-					if (!angular.isDefined(scope.remote))
+				scope.request = function (paramName, paramValue, remote, remoteParam) {
+					var promise, remoteOptions = {};
+					if (scope.disabled) return $q.reject();
+					if (!angular.isDefined(remote))
 						throw 'Remote attribute is not defined';
+					
 					scope.loading = true;
 					scope.options = [];
-					promise = scope.remote({ search: search });
+					remoteOptions[paramName] = paramValue;
+					promise = remote(remoteOptions);
 					if (typeof promise.then !== 'function') {
 						var settings = { method: 'GET', cache: true, params: {} };
-						angular.extend(settings, scope.remote());
-						angular.extend(settings.params, scope.remote().params);
-						settings.params[scope.remoteParam] = search;
+						angular.extend(settings, promise);
+						angular.extend(settings.params, promise.params);
+						settings.params[remoteParam] = paramValue;
 						promise = $http(settings);
 					}
 					promise
@@ -129,13 +135,30 @@
 							initDeferred.reject();
 							throw 'Error while fetching data: ' + (error.message || error);
 						});
+					return promise;
+				};
+				scope.fetch = function () {
+					return scope.request('search', scope.search || '', scope.remote, scope.remoteParam);
+				};
+				scope.fetchValidation = function (value) {
+					return scope.request('value', value, scope.remoteValidation, scope.remoteValidationParam);
 				};
 				if (!angular.isDefined(scope.remote)) {
 					scope.remote = false;
+					scope.remoteValidation = false;
 					initDeferred.resolve();
-				}
+				} else
+					if (!angular.isDefined(scope.remoteValidation))
+						scope.remoteValidation = false;
 				if (scope.remote)
-					scope.$watch('search', scope.fetch);
+					$q.when(!scope.hasValue() || !scope.remoteValidation
+						? angular.noop
+						: scope.fetchValidation(scope.value)
+					).then(function () {
+						scope.$watch('search', function () {
+							$timeout(scope.fetch);
+						});
+					});
 				
 				// Fill with options in the select
 				scope.optionToObject = function (option, group) {
@@ -383,8 +406,8 @@
 				};
 				scope.resetInput = function () {
 					input.val('');
-					scope.search = '';
 					scope.setInputWidth();
+					$timeout(function () { scope.search = ''; });
 				};
 				
 				scope.$watch('[search, options, value]', function () {
@@ -428,9 +451,15 @@
 				};
 				scope.$watch('value', function (newValue, oldValue) {
 					if (angular.equals(newValue, oldValue)) return;
-					if (!scope.remote || scope.options.length > 0) scope.updateSelected();
-					scope.filterOptions();
-					scope.updateValue();
+					
+					$q.when(!scope.remote || !scope.remoteValidation || !scope.hasValue()
+						? angular.noop
+						: scope.fetchValidation(newValue)
+					).then(function () {
+						scope.updateSelected();
+						scope.filterOptions();
+						scope.updateValue();
+					});
 				}, true);
 				
 				// DOM event listeners
@@ -468,11 +497,7 @@
 					input[0].focus();
 				};
 				scope.api.set = function (value) {
-					var search = (scope.filteredOptions || []).filter(function (option) { return scope.optionEquals(option, value); });
-					
-					angular.forEach(search, function (option) {
-						scope.set(option);
-					});
+					return scope.value = value;
 				};
 				scope.api.unset = function (value) {
 					var values  = !value ? scope.selectedValues : (scope.selectedValues || []).filter(function (option) { return scope.optionEquals(option, value); }),
@@ -509,7 +534,8 @@
 								'</div>' +
 							'</li>' +
 						'</ul>' +
-						'<input ng-model="search" placeholder="{{!hasValue() ? placeholder : \'\'}}" ng-disabled="disabled" ng-required="required && !hasValue()">' +
+						'<input ng-model="search" placeholder="{{!hasValue() ? placeholder : \'\'}}" ng-model-options="{ debounce: debounce }"' +
+							'ng-disabled="disabled" ng-required="required && !hasValue()">' +
 						'<div ng-if="!multiple || loading" class="selector-helper selector-global-helper" ng-click="!disabled && removeButton && unset()">' +
 							'<span class="selector-icon"></span>' +
 						'</div>' +
