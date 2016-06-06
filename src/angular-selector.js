@@ -109,6 +109,7 @@
 				// Remote fetching
 				scope.request = function (paramName, paramValue, remote, remoteParam) {
 					var promise, remoteOptions = {};
+					if (scope.disabled) return $q.reject();
 					if (!angular.isDefined(remote))
 						throw 'Remote attribute is not defined';
 					
@@ -118,8 +119,8 @@
 					promise = remote(remoteOptions);
 					if (typeof promise.then !== 'function') {
 						var settings = { method: 'GET', cache: true, params: {} };
-						angular.extend(settings, remote());
-						angular.extend(settings.params, remote().params);
+						angular.extend(settings, promise);
+						angular.extend(settings.params, promise.params);
 						settings.params[remoteParam] = paramValue;
 						promise = $http(settings);
 					}
@@ -137,23 +138,27 @@
 					return promise;
 				};
 				scope.fetch = function () {
-					if (!scope.disabled)
-						scope.request('search', scope.search || '', scope.remote, scope.remoteParam);
+					return scope.request('search', scope.search || '', scope.remote, scope.remoteParam);
 				};
 				scope.fetchValidation = function (value) {
 					return scope.request('value', value, scope.remoteValidation, scope.remoteValidationParam);
 				};
 				if (!angular.isDefined(scope.remote)) {
 					scope.remote = false;
+					scope.remoteValidation = false;
 					initDeferred.resolve();
-				}
-				if (scope.remote) {
-					scope.$watch('search', function () {
-						$timeout(scope.fetch);
+				} else
+					if (!angular.isDefined(scope.remoteValidation))
+						scope.remoteValidation = false;
+				if (scope.remote)
+					$q.when(!scope.hasValue() || !scope.remoteValidation
+						? angular.noop
+						: scope.fetchValidation(scope.value)
+					).then(function () {
+						scope.$watch('search', function (newValue, oldValue) {
+							$timeout(scope.fetch);
+						});
 					});
-					if (scope.remoteValidation)
-						scope.fetchValidation(scope.value);
-				}
 				
 				// Fill with options in the select
 				scope.optionToObject = function (option, group) {
@@ -446,15 +451,15 @@
 				};
 				scope.$watch('value', function (newValue, oldValue) {
 					if (angular.equals(newValue, oldValue)) return;
-
-					function update(options) {
+					
+					$q.when(!scope.remote || !scope.remoteValidation || !scope.hasValue()
+						? angular.noop
+						: scope.fetchValidation(newValue)
+					).then(function () {
 						scope.updateSelected();
 						scope.filterOptions();
 						scope.updateValue();
-					};
-					
-					if (!scope.remote || !scope.remoteValidation) update();
-					else scope.fetchValidation(newValue).then(update);
+					});
 				}, true);
 				
 				// DOM event listeners
