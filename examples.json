@@ -64,12 +64,7 @@ angular.callbacks._0([
 	},
 	{
 		"title": "Create custom options (using <code>Promise</code>)",
-		"html": "<select selector\n\tmodel=\"myHobbies\"\n\tmulti=\"true\"\n\toptions=\"hobbies\"\n\tvalue-attr=\"value\"\n\tplaceholder=\"Which are your hobbies? (type something that is not in the list)\"\n\tcreate=\"createFunction(input)\"></select>\n\n<p>\n\tCurrent value: <code ng-bind=\"myHobbies|json\"></code>\n</p>",
-		"js": "$scope.hobbies = [\n\t{ value: 0, label: \"Basketball\" },\n\t{ value: 1, label: \"Videogames\" },\n\t{ value: 2, label: \"Travelling\" }\n];\n\n$scope.createFunction = function (input) {\n\treturn $hobbies.insert(input);\n};",
-		"service": {
-			"name": "$hobbies",
-			"deps": ["$q"],
-			"js": "function Hobbies() {\n\tthis.lastId = 3;\n}\nHobbies.prototype.insert = function (input) {\n\treturn $q.resolve({\n\t\tvalue: this.lastId++,\n\t\tlabel: input\n\t});\n};\n\nreturn new Hobbies();"
-		}
+		"html": "<div ng-show=\"!creation.active\">\n\t<select selector\n\t\tmodel=\"myHobbies\"\n\t\tmulti=\"true\"\n\t\toptions=\"hobbies\"\n\t\tvalue-attr=\"value\"\n\t\tplaceholder=\"Which are your hobbies? (type something that is not in the list)\"\n\t\tcreate=\"creation.show(input)\"></select>\n\t\n\t<p>\n\t\tCurrent value: <code ng-bind=\"myHobbies|json\"></code>\n\t</p>\n</div>\n\n<form ng-show=\"creation.active\" ng-submit=\"creation.insert()\">\n\t<div class=\"form-group\">\n\t\t<label>Value</label>\n\t\t<input ng-model=\"creation.value\" required autofocus\n\t\t\tplaceholder=\"value\" class=\"form-control\">\n\t</div>\n\t<div class=\"form-group\">\n\t\t<label>Label</label>\n\t\t<input ng-model=\"creation.label\" required\n\t\t\tplaceholder=\"label\" class=\"form-control\">\n\t</div>\n\t<button type=\"submit\" class=\"btn btn-success\">\n\t\tInsert value!\n\t</button>\n\t<button type=\"button\" class=\"btn btn-default\"\n\t\tng-click=\"creation.cancel()\">\n\t\tCancel\n\t</button>\n</form>",
+		"js": "$scope.hobbies = [\n\t{ value: 0, label: \"Basketball\" },\n\t{ value: 1, label: \"Videogames\" },\n\t{ value: 2, label: \"Travelling\" }\n];\n\n$scope.creation = {\n\tactive: false,\n\tdeferred: null,\n\tshow: function (input) {\n\t\tthis.deferred = $q.defer();\n\t\tthis.active   = true;\n\t\tthis.value    = $scope.hobbies.length;\n\t\tthis.label    = input;\n\t\treturn this.deferred.promise;\n\t},\n\tinsert: function () {\n\t\tthis.active = false;\n\t\tthis.deferred.resolve({\n\t\t\tvalue: this.value,\n\t\t\tlabel: this.label\n\t\t});\n\t},\n\tcancel: function () {\n\t\tthis.active = false;\n\t\tthis.deferred.reject();\n\t}\n};"
 	}
 ])

@@ -18,7 +18,7 @@ angular
 			return $sce.trustAsHtml(lang && input ? hljs.highlight(lang, input).value : input);
 		};
 	}])
-	.directive('example', ['$compile', function ($compile) {
+	.directive('example', ['$compile', '$q', function ($compile, $q) {
 		return {
 			restrict: 'C',
 			link: function ($scope, $element) {
