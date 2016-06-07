@@ -90,8 +90,39 @@
 				});
 				
 				// Options' utilities
+				scope.getObjValue = function (obj, path) {
+					var key;
+					if (!angular.isDefined(obj)) return obj;
+					path = angular.isArray(path) ? path : path.split('.'),
+					key  = path.shift();
+					
+					if (key.indexOf('[') > 0) {
+						var match = key.match(/(\w+)\[(\d+)\]/);
+						if (match !== null) {
+							obj = obj[match[1]];
+							key = match[2];
+						}
+					}
+					return path.length === 0 ? obj[key] : scope.getObjValue(obj[key], path);
+				};
+				scope.setObjValue = function (obj, path, value) {
+					var key;
+					if (!angular.isDefined(obj)) obj = {};
+					path = angular.isArray(path) ? path : path.split('.'),
+					key = path.shift();
+					
+					if (key.indexOf('[') > 0) {
+						var match = key.match(/(\w+)\[(\d+)\]/);
+						if (match !== null) {
+							obj = obj[match[1]];
+							key = match[2];
+						}
+					}
+					obj[key] = path.length === 0 ? value : scope.setObjValue(obj[key], path, value);
+					return obj;
+				};
 				scope.optionValue = function (option) {
-					return scope.valueAttr == null ? option : option[scope.valueAttr];
+					return scope.valueAttr == null ? option : scope.getObjValue(option, scope.valueAttr);
 				};
 				scope.optionEquals = function (option, value) {
 					return angular.equals(scope.optionValue(option), angular.isDefined(value) ? value : scope.value);
@@ -99,8 +130,8 @@
 				
 				// Value utilities
 				scope.setValue = function (value) {
-					if (!scope.multiple) scope.value = scope.valueAttr == null ? (value || {}) : (value || {})[scope.valueAttr];
-					else scope.value = scope.valueAttr == null ? (value || []) : (value || []).map(function (option) { return option[scope.valueAttr]; });
+					if (!scope.multiple) scope.value = scope.valueAttr == null ? (value || {}) : scope.getObjValue(value || {}, scope.valueAttr);
+					else scope.value = scope.valueAttr == null ? (value || []) : (value || []).map(function (option) { return scope.getObjValue(option, scope.valueAttr); });
 				};
 				scope.hasValue = function () {
 					return scope.multiple ? (scope.value || []).length > 0 : (scope.valueAttr == null ? !angular.equals({}, scope.value) : !!scope.value);
@@ -169,11 +200,11 @@
 						if (!key.match(/^\$/)) object[key] = value;
 					});
 					if (option.value)
-						object[scope.valueAttr || 'value'] = option.value;
+						scope.setObjValue(object, scope.valueAttr || 'value', option.value);
 					if (element.text())
-						object[scope.labelAttr] = element.text().trim();
+						scope.setObjValue(object, scope.labelAttr, element.text().trim());
 					if (angular.isDefined(group))
-						object[scope.groupAttr] = group;
+						scope.setObjValue(object, scope.groupAttr, group);
 					scope.options.push(object);
 					
 					if (element.attr('selected') && (scope.multiple || !scope.hasValue()))
@@ -280,8 +311,8 @@
 						if (angular.isFunction(scope.create)) {
 							option = scope.create({ input: value });
 						} else {
-							option[scope.labelAttr] = value;
-							option[scope.valueAttr || 'value'] = value;
+							scope.setObjValue(option, scope.labelAttr, value);
+							scope.setObjValue(option, scope.valueAttr || 'value', value);
 						}
 						return option;
 					})()).then(function (option) {
@@ -334,7 +365,7 @@
 							break;
 						case KEYS.backspace:
 							if (!input.val()) {
-								var search = (scope.selectedValues.slice(-1)[0] || {})[scope.labelAttr] || '';
+								var search = scope.getObjValue(scope.selectedValues.slice(-1)[0] || {}, scope.labelAttr || '');
 								scope.unset();
 								scope.open();
 								if (scope.softDelete) {
@@ -451,7 +482,6 @@
 				};
 				scope.$watch('value', function (newValue, oldValue) {
 					if (angular.equals(newValue, oldValue)) return;
-					
 					$q.when(!scope.remote || !scope.remoteValidation || !scope.hasValue()
 						? angular.noop
 						: scope.fetchValidation(newValue)
@@ -524,7 +554,7 @@
 					'ng-class="{open: isOpen, empty: !filteredOptions.length && (!create || !search), multiple: multiple, \'has-value\': hasValue(), rtl: rtl, ' +
 						'loading: loading, \'remove-button\': removeButton, disabled: disabled}">' +
 					'<select name="{{name}}" ng-hide="true" ' +
-						'ng-model="selectedValues" multiple ng-options="option as option[labelAttr] for option in selectedValues" ng-hide="true"></select>' +
+						'ng-model="selectedValues" multiple ng-options="option as getObjValue(option, labelAttr) for option in selectedValues" ng-hide="true"></select>' +
 					'<label class="selector-input">' +
 						'<ul class="selector-values">' +
 							'<li ng-repeat="(index, option) in selectedValues track by index">' +
@@ -543,16 +573,16 @@
 					'<ul class="selector-dropdown" ng-show="filteredOptions.length > 0 || (create && search)">' +
 						'<li class="selector-option create" ng-class="{active: highlighted == -1}" ng-if="create && search" ' +
 							'ng-include="dropdownCreateTemplate" ng-mouseover="highlight(-1)" ng-click="createOption(search)"></li>' +
-						'<li ng-repeat-start="(index, option) in filteredOptions track by index" class="selector-optgroup" ' +
-							'ng-include="dropdownGroupTemplate" ng-show="option[groupAttr] && index == 0 || filteredOptions[index-1][groupAttr] != option[groupAttr]"></li>' +
-						'<li ng-repeat-end ng-class="{active: highlighted == index, grouped: option[groupAttr]}" class="selector-option" ' +
+						'<li ng-repeat-start="(index, option) in filteredOptions track by index" class="selector-optgroup" ng-include="dropdownGroupTemplate" ' +
+							'ng-show="getObjValue(option, groupAttr) && index==0 || getObjValue(filteredOptions[index-1], groupAttr) != getObjValue(option, groupAttr)"></li>' +
+						'<li ng-repeat-end ng-class="{active: highlighted == index, grouped: getObjValue(option, groupAttr)}" class="selector-option" ' +
 							'ng-include="dropdownItemTemplate" ng-mouseover="highlight(index)" ng-click="set()"></li>' +
 					'</ul>' +
 				'</div>'
 			);
 			$templateCache.put('selector/item-create.html', 'Add <i ng-bind="search"></i>');
-			$templateCache.put('selector/item-default.html', '<span ng-bind="option[labelAttr] || option"></span>');
-			$templateCache.put('selector/group-default.html', '<span ng-bind="option[groupAttr]"></span>');
+			$templateCache.put('selector/item-default.html', '<span ng-bind="getObjValue(option, labelAttr) || option"></span>');
+			$templateCache.put('selector/group-default.html', '<span ng-bind="getObjValue(option, groupAttr)"></span>');
 		}])
 		.directive('selector', ['$filter', '$timeout', '$window', '$http', '$q', function ($filter, $timeout, $window, $http, $q) {
 			return new Selector($filter, $timeout, $window, $http, $q);
