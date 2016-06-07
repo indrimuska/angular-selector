@@ -92,9 +92,9 @@
 				// Options' utilities
 				scope.getObjValue = function (obj, path) {
 					var key;
-					if (!angular.isDefined(obj)) return obj;
-					path = angular.isArray(path) ? path : path.split('.'),
-					key  = path.shift();
+					if (!angular.isDefined(obj) || !angular.isDefined(path)) return obj;
+					path = angular.isArray(path) ? path : path.split('.');
+					key = path.shift();
 					
 					if (key.indexOf('[') > 0) {
 						var match = key.match(/(\w+)\[(\d+)\]/);
@@ -108,7 +108,7 @@
 				scope.setObjValue = function (obj, path, value) {
 					var key;
 					if (!angular.isDefined(obj)) obj = {};
-					path = angular.isArray(path) ? path : path.split('.'),
+					path = angular.isArray(path) ? path : path.split('.');
 					key = path.shift();
 					
 					if (key.indexOf('[') > 0) {
@@ -573,9 +573,10 @@
 					'<ul class="selector-dropdown" ng-show="filteredOptions.length > 0 || (create && search)">' +
 						'<li class="selector-option create" ng-class="{active: highlighted == -1}" ng-if="create && search" ' +
 							'ng-include="dropdownCreateTemplate" ng-mouseover="highlight(-1)" ng-click="createOption(search)"></li>' +
-						'<li ng-repeat-start="(index, option) in filteredOptions track by index" class="selector-optgroup" ng-include="dropdownGroupTemplate" ' +
-							'ng-show="getObjValue(option, groupAttr) && index==0 || getObjValue(filteredOptions[index-1], groupAttr) != getObjValue(option, groupAttr)"></li>' +
-						'<li ng-repeat-end ng-class="{active: highlighted == index, grouped: getObjValue(option, groupAttr)}" class="selector-option" ' +
+						'<li ng-repeat-start="(index, option) in filteredOptions track by index" class="selector-optgroup" ' +
+							'ng-include="dropdownGroupTemplate" ng-show="groupAttr && ' +
+							'(getObjValue(option, groupAttr) && index == 0 || getObjValue(filteredOptions[index - 1], groupAttr) != getObjValue(option, groupAttr))"></li>' +
+						'<li ng-repeat-end ng-class="{active: highlighted == index, grouped: groupAttr && getObjValue(option, groupAttr)}" class="selector-option" ' +
 							'ng-include="dropdownItemTemplate" ng-mouseover="highlight(index)" ng-click="set()"></li>' +
 					'</ul>' +
 				'</div>'
