@@ -57,7 +57,8 @@
 		Selector.prototype.$inject = ['$filter', '$timeout', '$window', '$http', '$q'];
 		Selector.prototype.link = function (scope, element, attrs, controller, transclude) {
 			transclude(scope, function (clone, scope) {
-				var input        = angular.element(element[0].querySelector('.selector-input input')),
+				var filter       = $filter('filter'),
+					input        = angular.element(element[0].querySelector('.selector-input input')),
 					dropdown     = angular.element(element[0].querySelector('.selector-dropdown')),
 					initDeferred = $q.defer(),
 					defaults     = {
@@ -405,7 +406,7 @@
 						return options.indexOf(value) >= 0;
 				};
 				scope.filterOptions = function () {
-					scope.filteredOptions = $filter('filter')(scope.options || [], scope.search);
+					scope.filteredOptions = filter(scope.options || [], scope.search);
 					if (scope.multiple)
 						scope.filteredOptions = scope.filteredOptions.filter(function (option) {
 							var selectedValues = angular.isArray(scope.selectedValues) ? scope.selectedValues : [scope.selectedValues];
@@ -454,7 +455,7 @@
 				
 				// Update value
 				scope.updateValue = function (origin) {
-					if (!angular.isDefined(origin)) origin = scope.selectedValues;
+					if (!angular.isDefined(origin)) origin = scope.selectedValues || [];
 					scope.setValue(!scope.multiple ? origin[0] : origin);
 				};
 				scope.$watch('selectedValues', function (newValue, oldValue) {
@@ -463,7 +464,7 @@
 					if (angular.isFunction(scope.change))
 						scope.change(scope.multiple
 							? { newValue: newValue, oldValue: oldValue }
-							: { newValue: newValue[0], oldValue: oldValue[0] });
+							: { newValue: (newValue || [])[0], oldValue: (oldValue || [])[0] });
 				}, true);
 				scope.$watchCollection('options', function (newValue, oldValue) {
 					if (angular.equals(newValue, oldValue) || scope.remote) return;
@@ -475,7 +476,7 @@
 					if (!scope.multiple) scope.selectedValues = (scope.options || []).filter(function (option) { return scope.optionEquals(option); }).slice(0, 1);
 					else
 						scope.selectedValues = (scope.value || []).map(function (value) {
-							return $filter('filter')(scope.options, function (option) {
+							return filter(scope.options, function (option) {
 								return scope.optionEquals(option, value);
 							})[0];
 						}).filter(function (value) { return angular.isDefined(value); });
@@ -553,7 +554,7 @@
 				'<div class="selector-container" ng-attr-dir="{{rtl ? \'rtl\' : \'ltr\'}}" ' +
 					'ng-class="{open: isOpen, empty: !filteredOptions.length && (!create || !search), multiple: multiple, \'has-value\': hasValue(), rtl: rtl, ' +
 						'loading: loading, \'remove-button\': removeButton, disabled: disabled}">' +
-					'<select name="{{name}}" ng-hide="true" ' +
+					'<select name="{{name}}" ng-hide="true" ng-required="required && !hasValue()" ' +
 						'ng-model="selectedValues" multiple ng-options="option as getObjValue(option, labelAttr) for option in selectedValues" ng-hide="true"></select>' +
 					'<label class="selector-input">' +
 						'<ul class="selector-values">' +
