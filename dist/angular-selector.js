@@ -60,6 +60,8 @@
 				var filter       = $filter('filter'),
 					input        = angular.element(element[0].querySelector('.selector-input input')),
 					dropdown     = angular.element(element[0].querySelector('.selector-dropdown')),
+					inputCtrl    = input.controller('ngModel'),
+					selectCtrl   = element.find('select').controller('ngModel'),
 					initDeferred = $q.defer(),
 					defaults     = {
 						api:                    {},
@@ -519,6 +521,14 @@
 					.on('resize', function () {
 						scope.dropdownPosition();
 					});
+
+				// Update select controller
+				scope.$watch(function () { return inputCtrl.$pristine; }, function ($pristine) {
+					selectCtrl[$pristine ? '$setPristine' : '$setDirty']();
+				});
+				scope.$watch(function () { return inputCtrl.$touched; }, function ($touched) {
+					selectCtrl[$touched ? '$setTouched' : '$setUntouched']();
+				});
 				
 				// Expose APIs
 				angular.forEach(['open', 'close', 'fetch'], function (api) {
