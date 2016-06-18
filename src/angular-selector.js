@@ -185,12 +185,14 @@
 					if (!angular.isDefined(scope.remoteValidation))
 						scope.remoteValidation = false;
 				if (scope.remote)
-					$q.when(!scope.hasValue() || !scope.remoteValidation
-						? angular.noop
-						: scope.fetchValidation(scope.value)
-					).then(function () {
-						scope.$watch('search', function () {
-							$timeout(scope.fetch);
+					$timeout(function () {
+						$q.when(!scope.hasValue() || !scope.remoteValidation
+							? angular.noop
+							: scope.fetchValidation(scope.value)
+						).then(function () {
+							scope.$watch('search', function () {
+								$timeout(scope.fetch);
+							});
 						});
 					});
 				
@@ -273,6 +275,7 @@
 				scope.close = function () {
 					scope.isOpen = false;
 					scope.resetInput();
+					if (scope.remote) $timeout(scope.fetch);
 				};
 				scope.decrementHighlighted = function () {
 					scope.highlight(scope.highlighted - 1);
