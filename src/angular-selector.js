@@ -337,11 +337,13 @@
 					}
 					if (!scope.multiple || scope.closeAfterSelection) scope.close();
 					scope.resetInput();
+					selectCtrl.$setDirty();
 				};
 				scope.unset = function (index) {
 					if (!scope.multiple) scope.selectedValues = [];
 					else scope.selectedValues.splice(angular.isDefined(index) ? index : scope.selectedValues.length - 1, 1);
 					scope.resetInput();
+					selectCtrl.$setDirty();
 				};
 				scope.keydown = function (e) {
 					switch (e.keyCode) {
