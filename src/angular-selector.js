@@ -332,6 +332,9 @@
 					
 					if (!scope.multiple) scope.selectedValues = [option];
 					else {
+						if(!scope.selectedValues){
+							scope.selectedValues = [];
+						}
 						if (scope.selectedValues.indexOf(option) < 0)
 							scope.selectedValues.push(option);
 					}
