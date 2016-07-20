@@ -29,9 +29,6 @@ module.exports = function(grunt) {
 			}
 		},
 		uglify: {
-			options: {
-				banner: '/*! angular-selector - v<%= pkg.version %> - https://github.com/indrimuska/angular-selector - (c) 2015 Indri Muska - MIT */\n'
-			},
 			main: {
 				files: {
 					'dist/angular-selector.min.js': ['dist/angular-selector.js']
@@ -49,6 +46,19 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		header: {
+			main: {
+				options: {
+					text: '/*! angular-selector - v<%= pkg.version %> - https://github.com/indrimuska/angular-selector - (c) 2015 Indri Muska - MIT */'
+				},
+				files: {
+					'dist/angular-selector.js': 'dist/angular-selector.js',
+					'dist/angular-selector.css': 'dist/angular-selector.css',
+					'dist/angular-selector.min.js': 'dist/angular-selector.min.js',
+					'dist/angular-selector.min.css': 'dist/angular-selector.min.css'
+				}
+			}
+		},
 		'sync-json': {
 			options: {
 				include: ['name', 'description', 'version']
@@ -62,7 +72,7 @@ module.exports = function(grunt) {
 	});
 	
 	// Default tasks.
-	grunt.registerTask('default', ['eslint', 'copy', 'uglify', 'cssmin', 'sync-json']);
+	grunt.registerTask('default', ['eslint', 'copy', 'uglify', 'cssmin', 'header', 'sync-json']);
 	grunt.registerTask('update-patch', ['bumpup:patch', 'default']);
 	
 };
