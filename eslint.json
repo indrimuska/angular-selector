@@ -12,7 +12,9 @@
 		"eqeqeq": 0,
 		"strict": 0,
 		"semi": [2, "always"],
+		"space-before-blocks": [2, "always"],
 		"comma-spacing": [2, {"before": false, "after": true }],
-		"keyword-spacing": [2, {"before": true, "after": true }]
+		"keyword-spacing": [2, {"before": true, "after": true }],
+		"space-before-function-paren": [2, {"anonymous": "always", "named": "never"}]
 	}
 }
