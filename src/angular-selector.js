@@ -334,9 +334,8 @@
 					
 					if (!scope.multiple) scope.selectedValues = [option];
 					else {
-						if(!scope.selectedValues){
+						if (!scope.selectedValues)
 							scope.selectedValues = [];
-						}
 						if (scope.selectedValues.indexOf(option) < 0)
 							scope.selectedValues.push(option);
 					}
@@ -381,9 +380,10 @@
 								var search = scope.getObjValue(scope.selectedValues.slice(-1)[0] || {}, scope.labelAttr || '');
 								scope.unset();
 								scope.open();
-								if (scope.softDelete) {
-									scope.search = search;
-								}
+								if (scope.softDelete && !scope.disableSearch)
+									$timeout(function () {
+										scope.search = search;
+									});
 								e.preventDefault();
 							}
 							break;
