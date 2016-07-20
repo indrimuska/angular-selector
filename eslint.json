@@ -11,6 +11,8 @@
 		"quotes": [2, "single"],
 		"eqeqeq": 0,
 		"strict": 0,
-		"semi": [2, "always"]
+		"semi": [2, "always"],
+		"comma-spacing": [2, {"before": false, "after": true }],
+		"keyword-spacing": [2, {"before": true, "after": true }]
 	}
 }
