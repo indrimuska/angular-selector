@@ -1,3 +1,4 @@
+/*! angular-selector - v1.4.0 - https://github.com/indrimuska/angular-selector - (c) 2015 Indri Muska - MIT */
 (function (angular) {
 	
 	// Key codes
@@ -23,6 +24,7 @@
 				name:                   '@?',
 				value:                  '=model',
 				disabled:               '=?disable',
+				disableSearch:          '=?',
 				required:               '=?require',
 				multiple:               '=?multi',
 				placeholder:            '@?',
@@ -66,6 +68,7 @@
 					defaults     = {
 						api:                    {},
 						search:                 '',
+						disableSearch:          false,
 						selectedValues:         [],
 						highlighted:            0,
 						valueAttr:              null,
@@ -332,6 +335,8 @@
 					
 					if (!scope.multiple) scope.selectedValues = [option];
 					else {
+						if (!scope.selectedValues)
+							scope.selectedValues = [];
 						if (scope.selectedValues.indexOf(option) < 0)
 							scope.selectedValues.push(option);
 					}
@@ -376,10 +381,11 @@
 								var search = scope.getObjValue(scope.selectedValues.slice(-1)[0] || {}, scope.labelAttr || '');
 								scope.unset();
 								scope.open();
-								if (scope.softDelete) {
-									scope.search = search;
-									if (scope.multiple) e.preventDefault();
-								}
+								if (scope.softDelete && !scope.disableSearch)
+									$timeout(function () {
+										scope.search = search;
+									});
+								e.preventDefault();
 							}
 							break;
 						case KEYS.left:
@@ -581,7 +587,7 @@
 							'</li>' +
 						'</ul>' +
 						'<input ng-model="search" placeholder="{{!hasValue() ? placeholder : \'\'}}" ng-model-options="{ debounce: debounce }"' +
-							'ng-disabled="disabled" ng-required="required && !hasValue()">' +
+							'ng-disabled="disabled" ng-readonly="disableSearch" ng-required="required && !hasValue()">' +
 						'<div ng-if="!multiple || loading" class="selector-helper selector-global-helper" ng-click="!disabled && removeButton && unset()">' +
 							'<span class="selector-icon"></span>' +
 						'</div>' +

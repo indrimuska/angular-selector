@@ -67,6 +67,7 @@ Parameter | Type | Default | Description
 model | `Property` | | Two-way binding property that models the `select` view.
 name | `String` | | Input name attribute.
 disable | `Boolean` | `false` | Enable/disable the select. Note the name is `disable` not `disabled` to avoid collisions with the HTML5 disabled attribute.
+disableSearch | `Boolean` | `false` | Enable/disable the search input field.
 require | `Boolean` | `false` | Sets required validation. Note the name is `require` not `required` to avoid collisions with the HTML5 required attribute.
 multi | `Boolean` | `false` | Allows to select more than one value. Note the name is `multi` not `multiple` to avoid collisions with the HTML5 multiple attribute.
 placeholder | `String` | | Optional placeholder text to display if input is empty.
@@ -84,7 +85,7 @@ remoteParam | `String` | `"q"` | If `remote` attribute is used with the native `
 remoteValidation | `Object` or `Promise` | <pre>{<br>  method: 'GET',<br>  cache: true,<br>  params: {}<br>}</pre> | This should be used to perform validation after a "manual" update of the model. It has the same structure of the `remote` property, check out ["Remote fetching and validation"](http://indrimuska.github.io/angular-selector/) example.
 remoteValidationParam | `String` | `"value"` | If `remoteValidation` attribute is used with the native `$http` service, this parameter is the name of the query key in the `params` object.
 removeButton | `Boolean` | `true` | Two-way bindable attribute to show the remove button (cross icon).
-softDelete | `Boolean` | `false` | Restores the last selected input text (using `labelAttr` attribute) after pressing <kbd>Backspace</kbd>.
+softDelete | `Boolean` | `false` | If `disableSearch` is `false`, restores the last selected input text (using `labelAttr` attribute) after pressing <kbd>Backspace</kbd>.
 closeAfterSelection | `Boolean` | `false` | Close dropdown after selecting an item.
 viewItemTemplate | `String` | `"selector/item-default.html"` | Template URL for the selected item(s).
 dropdownItemTemplate | `String` | `"selector/item-default.html"` | Template URL for each item in the dropdown list.
