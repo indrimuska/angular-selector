@@ -1,6 +1,6 @@
 {
   "name": "angular-selector",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "A native AngularJS directive that transform a simple `<select>` box into a full html select with typeahead.",
   "main": "src/angular-selector.js",
   "repository": {

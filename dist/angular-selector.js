@@ -1,4 +1,4 @@
-/*! angular-selector - v1.4.1 - https://github.com/indrimuska/angular-selector - (c) 2015 Indri Muska - MIT */
+/*! angular-selector - v1.4.2 - https://github.com/indrimuska/angular-selector - (c) 2015 Indri Muska - MIT */
 (function (angular) {
 	
 	// Key codes
@@ -86,8 +86,8 @@
 					};
 				
 				// Default attributes
-				if (!angular.isDefined(scope.value))
-					scope.value = scope.multiple ? [] : '';
+				if (!angular.isDefined(scope.value) && scope.multiple)
+					scope.value = [];
 				angular.forEach(defaults, function (value, key) {
 					if (!angular.isDefined(scope[key])) scope[key] = value;
 				});
@@ -136,11 +136,11 @@
 				
 				// Value utilities
 				scope.setValue = function (value) {
-					if (!scope.multiple) scope.value = scope.valueAttr == null ? (value || {}) : scope.getObjValue(value || {}, scope.valueAttr);
+					if (!scope.multiple) scope.value = scope.valueAttr == null ? value : scope.getObjValue(value || {}, scope.valueAttr);
 					else scope.value = scope.valueAttr == null ? (value || []) : (value || []).map(function (option) { return scope.getObjValue(option, scope.valueAttr); });
 				};
 				scope.hasValue = function () {
-					return scope.multiple ? (scope.value || []).length > 0 : (scope.valueAttr == null ? !angular.equals({}, scope.value) : !!scope.value);
+					return scope.multiple ? (scope.value || []).length > 0 : (scope.valueAttr == null ? (scope.value && !angular.equals({}, scope.value)) : !!scope.value);
 				};
 				
 				// Remote fetching
