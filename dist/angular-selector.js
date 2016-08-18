@@ -1,4 +1,4 @@
-/*! angular-selector - v1.4.2 - https://github.com/indrimuska/angular-selector - (c) 2015 Indri Muska - MIT */
+/*! angular-selector - v1.4.3 - https://github.com/indrimuska/angular-selector - (c) 2015 Indri Muska - MIT */
 (function (angular) {
 	
 	// Key codes
@@ -425,8 +425,10 @@
 							var selectedValues = angular.isArray(scope.selectedValues) ? scope.selectedValues : [scope.selectedValues];
 							return !scope.inOptions(selectedValues, option);
 						});
-					else
-						scope.highlight(scope.filteredOptions.indexOf(scope.selectedValues[0]));
+					else {
+						var index = scope.filteredOptions.indexOf(scope.selectedValues[0]);
+						if (index >= 0) scope.highlight(index);
+					}
 				};
 				
 				// Input width utilities

@@ -424,8 +424,10 @@
 							var selectedValues = angular.isArray(scope.selectedValues) ? scope.selectedValues : [scope.selectedValues];
 							return !scope.inOptions(selectedValues, option);
 						});
-					else
-						scope.highlight(scope.filteredOptions.indexOf(scope.selectedValues[0]));
+					else {
+						var index = scope.filteredOptions.indexOf(scope.selectedValues[0]);
+						if (index >= 0) scope.highlight(index);
+					}
 				};
 				
 				// Input width utilities
