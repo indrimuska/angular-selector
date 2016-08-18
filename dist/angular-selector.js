@@ -86,8 +86,7 @@
 					};
 				
 				// Default attributes
-				if (!angular.isDefined(scope.value) && scope.multiple)
-					scope.value = [];
+				if (!angular.isDefined(scope.value) && scope.multiple) scope.value = [];
 				angular.forEach(defaults, function (value, key) {
 					if (!angular.isDefined(scope[key])) scope[key] = value;
 				});
@@ -140,7 +139,7 @@
 					else scope.value = scope.valueAttr == null ? (value || []) : (value || []).map(function (option) { return scope.getObjValue(option, scope.valueAttr); });
 				};
 				scope.hasValue = function () {
-					return scope.multiple ? (scope.value || []).length > 0 : (scope.valueAttr == null ? (scope.value && !angular.equals({}, scope.value)) : !!scope.value);
+					return scope.multiple ? (scope.value || []).length > 0 : !!scope.value;
 				};
 				
 				// Remote fetching
