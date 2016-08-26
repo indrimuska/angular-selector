@@ -1,4 +1,4 @@
-/*! angular-selector - v1.4.4 - https://github.com/indrimuska/angular-selector - (c) 2015 Indri Muska - MIT */
+/*! angular-selector - v1.5.0 - https://github.com/indrimuska/angular-selector - (c) 2015 Indri Muska - MIT */
 (function (angular) {
 	
 	// Key codes
@@ -34,6 +34,7 @@
 				options:                '=?',
 				debounce:               '=?',
 				create:                 '&?',
+				limit:                  '=?',
 				rtl:                    '=?',
 				api:                    '=?',
 				change:                 '&?',
@@ -76,6 +77,7 @@
 						groupAttr:              'group',
 						options:                [],
 						debounce:               0,
+						limit:                  Infinity,
 						remoteParam:            'q',
 						remoteValidationParam:  'value',
 						removeButton:           true,
@@ -271,6 +273,7 @@
 					});
 				};
 				scope.open = function () {
+					if (scope.multiple && (scope.selectedValues || []).length >= scope.limit) return;
 					scope.isOpen = true;
 					scope.dropdownPosition();
 					$timeout(scope.scrollToHighlighted);
@@ -330,6 +333,8 @@
 					});
 				};
 				scope.set = function (option) {
+					if (scope.multiple && (scope.selectedValues || []).length >= scope.limit) return;
+					
 					if (!angular.isDefined(option))
 						option = scope.filteredOptions[scope.highlighted];
 					
@@ -340,7 +345,7 @@
 						if (scope.selectedValues.indexOf(option) < 0)
 							scope.selectedValues.push(option);
 					}
-					if (!scope.multiple || scope.closeAfterSelection) scope.close();
+					if (!scope.multiple || scope.closeAfterSelection || (scope.selectedValues || []).length >= scope.limit) scope.close();
 					scope.resetInput();
 					selectCtrl.$setDirty();
 				};
@@ -492,7 +497,7 @@
 							return filter(scope.options, function (option) {
 								return scope.optionEquals(option, value);
 							})[0];
-						}).filter(function (value) { return angular.isDefined(value); });
+						}).filter(function (value) { return angular.isDefined(value); }).slice(0, scope.limit);
 				};
 				scope.$watch('value', function (newValue, oldValue) {
 					if (angular.equals(newValue, oldValue)) return;
@@ -576,7 +581,7 @@
 					'ng-class="{open: isOpen, empty: !filteredOptions.length && (!create || !search), multiple: multiple, \'has-value\': hasValue(), rtl: rtl, ' +
 						'loading: loading, \'remove-button\': removeButton, disabled: disabled}">' +
 					'<select name="{{name}}" ng-hide="true" ng-required="required && !hasValue()" ' +
-						'ng-model="selectedValues" multiple ng-options="option as getObjValue(option, labelAttr) for option in selectedValues" ng-hide="true"></select>' +
+						'ng-model="selectedValues" multiple ng-options="option as getObjValue(option, labelAttr) for option in selectedValues"></select>' +
 					'<label class="selector-input">' +
 						'<ul class="selector-values">' +
 							'<li ng-repeat="(index, option) in selectedValues track by index">' +
@@ -586,8 +591,8 @@
 								'</div>' +
 							'</li>' +
 						'</ul>' +
-						'<input ng-model="search" placeholder="{{!hasValue() ? placeholder : \'\'}}" ng-model-options="{ debounce: debounce }"' +
-							'ng-disabled="disabled" ng-readonly="disableSearch" ng-required="required && !hasValue()">' +
+						'<input ng-model="search" placeholder="{{!hasValue() ? placeholder : \'\'}}" ng-model-options="{debounce: debounce}"' +
+							'ng-disabled="disabled" ng-readonly="disableSearch" ng-required="required && !hasValue()" autocomplete="off">' +
 						'<div ng-if="!multiple || loading" class="selector-helper selector-global-helper" ng-click="!disabled && removeButton && unset()">' +
 							'<span class="selector-icon"></span>' +
 						'</div>' +

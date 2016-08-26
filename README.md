@@ -70,6 +70,7 @@ disable | `Boolean` | `false` | Enable/disable the select. Note the name is `dis
 disableSearch | `Boolean` | `false` | Enable/disable the search input field.
 require | `Boolean` | `false` | Sets required validation. Note the name is `require` not `required` to avoid collisions with the HTML5 required attribute.
 multi | `Boolean` | `false` | Allows to select more than one value. Note the name is `multi` not `multiple` to avoid collisions with the HTML5 multiple attribute.
+limit | `Integer` | `Infinity` | Maximum number of selectable items when `multi` is `true`.
 placeholder | `String` | | Optional placeholder text to display if input is empty.
 options | `Array` | `[]` | Set of options to display.<br><br>Each object must contain a `label` key and a `value` key, otherwise you need to use a custom template (`viewItemTemplate` and `dropdownItemTemplate`) or change the default values of `valueAttr` and `labelAttr` properties.
 valueAttr | `String` | `null` | Name of the value key in options array. This also sets the type of result for the model: if you don't set this attribute (`null` by default) the entire object option is returned, otherwise it will be returned only the selected property.
