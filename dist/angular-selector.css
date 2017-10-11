@@ -1,4 +1,4 @@
-/*! angular-selector - v1.6.0 - https://github.com/indrimuska/angular-selector - (c) 2015 Indri Muska - MIT */
+/*! angular-selector - v1.6.1 - https://github.com/indrimuska/angular-selector - (c) 2015 Indri Muska - MIT */
 @-webkit-keyframes selector-rotate { 0% { -webkit-transform: rotateZ(-359deg); } 100% { -webkit-transform: rotateZ(0deg); } }
    @-moz-keyframes selector-rotate { 0% {    -moz-transform: rotateZ(-359deg); } 100% {    -moz-transform: rotateZ(0deg); } }
      @-o-keyframes selector-rotate { 0% {      -o-transform: rotateZ(-359deg); } 100% {      -o-transform: rotateZ(0deg); } }

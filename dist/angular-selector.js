@@ -1,4 +1,4 @@
-/*! angular-selector - v1.6.0 - https://github.com/indrimuska/angular-selector - (c) 2015 Indri Muska - MIT */
+/*! angular-selector - v1.6.1 - https://github.com/indrimuska/angular-selector - (c) 2015 Indri Muska - MIT */
 (function (angular) {
 	
 	// Key codes
@@ -308,7 +308,7 @@
 						marginTop    = parseFloat(styles.marginTop || 0),
 						marginBottom = parseFloat(styles.marginBottom || 0);
 					
-					if (!scope.filteredOptions.length) return;
+					if (!scope.filteredOptions.length || !option) return;
 					
 					if (option.offsetTop + option.offsetHeight + marginBottom > dd.scrollTop + dd.offsetHeight)
 						scope.$evalAsync(function () {
@@ -439,10 +439,10 @@
 					}
 					// show create item option
 					if (scope.create) {
-						scope.showCreateOption = scope.create && scope.search && scope.filteredOptions.filter(function (option) {
-							return scope.getObjValue(option, scope.labelAttr).toLowerCase() == scope.search.toLowerCase();
-
-						}).length == 0;
+						scope.showCreateOption = scope.create && scope.search &&
+							filter(scope.filteredOptions, scope.search, function (actual, expected) {
+								return angular.isString(actual) && (actual || '').toLowerCase() == expected.toLowerCase();
+							}).length == 0;
 						if (scope.showCreateOption && scope.filteredOptions.length == 0 && scope.highlighted != -1) scope.highlighted = -1;
 					}
 				};
