@@ -1,4 +1,4 @@
-/*! angular-selector - v1.5.0 - https://github.com/indrimuska/angular-selector - (c) 2015 Indri Muska - MIT */
+/*! angular-selector - v1.6.0 - https://github.com/indrimuska/angular-selector - (c) 2015 Indri Muska - MIT */
 (function (angular) {
 	
 	// Key codes
@@ -81,6 +81,7 @@
 						remoteParam:            'q',
 						remoteValidationParam:  'value',
 						removeButton:           true,
+						showCreateOption:       false,
 						viewItemTemplate:       'selector/item-default.html',
 						dropdownItemTemplate:   'selector/item-default.html',
 						dropdownCreateTemplate: 'selector/item-create.html',
@@ -189,13 +190,13 @@
 					if (!angular.isDefined(scope.remoteValidation))
 						scope.remoteValidation = false;
 				if (scope.remote)
-					$timeout(function () {
+					scope.$evalAsync(function () {
 						$q.when(!scope.hasValue() || !scope.remoteValidation
 							? angular.noop
 							: scope.fetchValidation(scope.value)
 						).then(function () {
 							scope.$watch('search', function () {
-								$timeout(scope.fetch);
+								scope.$evalAsync(scope.fetch);
 							});
 						});
 					});
@@ -276,7 +277,7 @@
 					if (scope.multiple && (scope.selectedValues || []).length >= scope.limit) return;
 					scope.isOpen = true;
 					scope.dropdownPosition();
-					$timeout(scope.scrollToHighlighted);
+					scope.$evalAsync(scope.scrollToHighlighted);
 				};
 				scope.close = function () {
 					scope.isOpen = false;
@@ -292,15 +293,17 @@
 					scope.scrollToHighlighted();
 				};
 				scope.highlight = function (index) {
-					if (attrs.create && scope.search && index == -1)
-						scope.highlighted = -1;
-					else
-						if (scope.filteredOptions.length)
-							scope.highlighted = (scope.filteredOptions.length + index) % scope.filteredOptions.length;
+					var length = scope.filteredOptions.length;
+					if (length) scope.highlighted = (length + index) % length;
+					if (scope.showCreateOption) {
+						if (index == -1 || index == length) scope.highlighted = -1;
+						if (index == -2) scope.highlighted = length - 1;
+					}
 				};
 				scope.scrollToHighlighted = function () {
 					var dd           = dropdown[0],
-						option       = dd.querySelectorAll('li.selector-option')[scope.highlighted],
+						index        = scope.highlighted + (scope.showCreateOption ? 1 : 0),
+						option       = dd.querySelectorAll('li.selector-option')[index],
 						styles       = getStyles(option),
 						marginTop    = parseFloat(styles.marginTop || 0),
 						marginBottom = parseFloat(styles.marginBottom || 0);
@@ -308,12 +311,12 @@
 					if (!scope.filteredOptions.length) return;
 					
 					if (option.offsetTop + option.offsetHeight + marginBottom > dd.scrollTop + dd.offsetHeight)
-						$timeout(function () {
+						scope.$evalAsync(function () {
 							dd.scrollTop = option.offsetTop + option.offsetHeight + marginBottom - dd.offsetHeight;
 						});
 					
 					if (option.offsetTop - marginTop < dd.scrollTop)
-						$timeout(function () {
+						scope.$evalAsync(function () {
 							dd.scrollTop = option.offsetTop - marginTop;
 						});
 				};
@@ -358,8 +361,8 @@
 				scope.keydown = function (e) {
 					switch (e.keyCode) {
 						case KEYS.up:
-							if (!scope.isOpen) break;
-							scope.decrementHighlighted();
+							if (!scope.isOpen) scope.open();
+							else scope.decrementHighlighted();
 							e.preventDefault();
 							break;
 						case KEYS.down:
@@ -387,7 +390,7 @@
 								scope.unset();
 								scope.open();
 								if (scope.softDelete && !scope.disableSearch)
-									$timeout(function () {
+									scope.$evalAsync(function () {
 										scope.search = search;
 									});
 								e.preventDefault();
@@ -434,6 +437,14 @@
 						var index = scope.filteredOptions.indexOf(scope.selectedValues[0]);
 						if (index >= 0) scope.highlight(index);
 					}
+					// show create item option
+					if (scope.create) {
+						scope.showCreateOption = scope.create && scope.search && scope.filteredOptions.filter(function (option) {
+							return scope.getObjValue(option, scope.labelAttr).toLowerCase() == scope.search.toLowerCase();
+
+						}).length == 0;
+						if (scope.showCreateOption && scope.filteredOptions.length == 0 && scope.highlighted != -1) scope.highlighted = -1;
+					}
 				};
 				
 				// Input width utilities
@@ -457,7 +468,7 @@
 				scope.resetInput = function () {
 					input.val('');
 					scope.setInputWidth();
-					$timeout(function () { scope.search = ''; });
+					scope.$evalAsync(function () { scope.search = ''; });
 				};
 				
 				scope.$watch('[search, options, value]', function () {
@@ -512,14 +523,15 @@
 				}, true);
 				
 				// DOM event listeners
+				angular.element(element[0].querySelector('.selector-input'))
+					.on('click', function () {
+						input[0].focus();
+					});
 				input = angular.element(element[0].querySelector('.selector-input input'))
 					.on('focus', function () {
 						$timeout(function () {
 							scope.$apply(scope.open);
 						});
-					})
-					.on('blur', function () {
-						scope.$apply(scope.close);
 					})
 					.on('keydown', function (e) {
 						scope.$apply(function () {
@@ -536,6 +548,13 @@
 				angular.element($window)
 					.on('resize', function () {
 						scope.dropdownPosition();
+					})
+					.on('click', function (e) {
+						if (angular.equals(element, e.target)) return;
+						if (scope.isOpen) {
+							scope.$evalAsync(scope.close);
+							e.preventDefault();
+						}
 					});
 
 				// Update select controller
@@ -598,7 +617,7 @@
 						'</div>' +
 					'</label>' +
 					'<ul class="selector-dropdown" ng-show="filteredOptions.length > 0 || (create && search)">' +
-						'<li class="selector-option create" ng-class="{active: highlighted == -1}" ng-if="create && search" ' +
+						'<li class="selector-option create" ng-class="{active: highlighted == -1}" ng-if="showCreateOption" ' +
 							'ng-include="dropdownCreateTemplate" ng-mouseover="highlight(-1)" ng-click="createOption(search)"></li>' +
 						'<li ng-repeat-start="(index, option) in filteredOptions track by index" class="selector-optgroup" ' +
 							'ng-include="dropdownGroupTemplate" ng-show="groupAttr && ' +
