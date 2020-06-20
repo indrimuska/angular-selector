@@ -24,7 +24,7 @@
   },
   "homepage": "http://indrimuska.github.io/angular-selector",
   "dependencies": {
-    "angular": "~1.4.4"
+    "angular": "~1.8.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
